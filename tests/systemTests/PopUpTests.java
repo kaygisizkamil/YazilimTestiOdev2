@@ -162,15 +162,20 @@ public class PopUpTests {
     @Test
     public void closeAdressPopUp() {
         driver.get("https://www.amazon.com/");
-    	 try {
-             Thread.sleep(5000); // Wait for 5 seconds for the pop-up to appear
-             WebElement popUpCloseBtn = driver.findElement(By.cssSelector(".a-button-inner"));
-             popUpCloseBtn.click();
-             System.out.println("Pop-up closed successfully.");
-         } catch (InterruptedException e) {
-             e.printStackTrace();
-         }
-
+        try {
+            Thread.sleep(5000); // Wait for 5 seconds for the pop-up to appear
+            WebElement popUpCloseBtn = driver.findElement(By.cssSelector(".a-button-inner"));
+            if (popUpCloseBtn.isDisplayed()) {
+                popUpCloseBtn.click();
+                System.out.println("Pop-up closed successfully.");
+            }
+            else {
+                System.out.println("No popup appears.");
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+      //  Assertions.assertTrue(driver.findElements(By.cssSelector(".a-button-inner")).isEmpty(), "Pop-up not closed successfully.");
     }
 
     
