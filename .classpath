@@ -7,7 +7,8 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry kind="lib" path="C:/Users/kamil/OneDrive/Masaüstü/TestOdev2/b211210381/SeleniumJar/selenium-server-4.9.0.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry exported="true" kind="lib" path="Libs/selenium-server-4.9.0.jar"/>
+	<classpathentry kind="lib" path="Libs/json-20180813.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
