@@ -52,7 +52,7 @@ public class Signuptests {
     public void testSuccessfulSignUp() {
         navigateToSignUpPage();
 
-        String email = "example@example.com"; // Change the email to a valid email address
+        String email = "example@example.com"; 
         fillRegistrationForm("Kygsz kygsz", email, "yourpassword", "yourpassword");
         submitForm();
 
@@ -65,7 +65,7 @@ public class Signuptests {
     public void testWeakPassword() {
         navigateToSignUpPage();
 
-        String email = "example2@example.com"; // Change the email to a valid email address
+        String email = "example2@example.com"; 
         fillRegistrationForm("Kygsz kygsz", email, "weak", "weak");
         submitForm();
 
