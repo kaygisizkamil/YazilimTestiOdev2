@@ -55,8 +55,9 @@ class NavBarTests {
 	 */
 	    @Test
 	    public void testSlideOutNavigation() throws InterruptedException {
+	    	Thread.sleep(500);
 	        // Find the 'All' button and hover over it to reveal the slide out navigation
-	        WebElement allButton = driver.findElement(By.cssSelector("#nav-hamburger-menu"));
+	        WebElement allButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#nav-hamburger-menu")));
 	        Actions actions = new Actions(driver);
 	        actions.moveToElement(allButton).click().build().perform();
 
@@ -78,7 +79,8 @@ class NavBarTests {
 	     * that is why i used js executor
 	     */
 	    @Test
-	    public void testNestedNavigation() {
+	    public void testNestedNavigation() throws InterruptedException {
+	    	Thread.sleep(500);
 	      WebElement navBar = driver.findElement(By.id("nav-main"));
 	      WebElement element = driver.findElement(By.xpath("//a[contains(text(),'Gift Cards')]"));
 	      JavascriptExecutor executor = (JavascriptExecutor) driver;
