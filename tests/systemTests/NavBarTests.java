@@ -51,7 +51,7 @@ class NavBarTests {
 	    
 	/*
 	 * Find the navbar and click Shop by interest
-	 * it is just a basic test that dont have suboptions
+	 * it is just a basic test that dont have suboptions.
 	 */
 	    @Test
 	    public void testSlideOutNavigation() throws InterruptedException {
