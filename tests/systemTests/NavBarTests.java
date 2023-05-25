@@ -59,7 +59,7 @@ public class NavBarTests {
 	 */
 	    @Test
 	    public void testSlideOutNavigation() throws InterruptedException {
-	    	beforeEach();
+	    	driver.get("https://www.amazon.com");
 	    	System.out.print("Sliding navbar icindeki testler basladi");
 	    	System.out.println();
 	    	Thread.sleep(500);
@@ -87,7 +87,7 @@ public class NavBarTests {
 	     */
 	    @Test
 	    public void testNestedNavigation() throws InterruptedException {
-	    	beforeEach();
+	    	driver.get("https://www.amazon.com");
 	    	System.out.println("Navbar yonlendirme testi basladi..");
 	    	System.out.println();
 	    	Thread.sleep(500);
@@ -98,9 +98,7 @@ public class NavBarTests {
 	      wait.until(ExpectedConditions.titleContains("Gift Cards"));
 	      assertTrue(driver.getTitle().contains("Gift Cards"));
 	    }
-	    private void beforeEach() {
-	    	driver.get("https://www.amazon.com");
-	    }
+	   
 
 
 
