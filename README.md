@@ -7,6 +7,7 @@
 - Testler Docker içinde -headless modda calismaktadir.
 - Docker olmadan da main uzerinden calistirabilirsiniz.
 - Docker olmadan calistirmak icin main icindeki `System.setProperty` ozelligini yorum satirina alip test classlarindaki headless modlarini silerek interactive olarak calistirabilirsiniz.
+- bind failed calismayi engellemez imagein ipv6 yi dinlemeye calismasindan kaynaklanir proje calismasina etkisi yoktur (safe to ignore).
 
 ### Projeyi Calistirmak Icin
 1. Projeyi clonlayarak veya indirerek proje klasorune `cd` ile yonlendirin.
