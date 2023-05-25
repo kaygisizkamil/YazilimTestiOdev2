@@ -39,7 +39,7 @@ public class Signuptests {
     public static void setUp() {
     	  ChromeOptions options = new ChromeOptions();
 	        options.addArguments("--no-sandbox"); // Required for running in Docker
-	        options.addArguments("--headless");
+	        options.addArguments("--headless=new");
 	        options.addArguments("--allow-insecure-localhost");
 	        options.addArguments("--ignore-certificate-errors");
 	        options.setAcceptInsecureCerts(true);

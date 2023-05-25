@@ -27,22 +27,24 @@ public class DropDownTests {
     private static final Logger logger = Logger.getLogger(DropDownTests.class.getName());
 
 
-    @BeforeAll
-    public static void setUp() {
-    	  ChromeOptions options = new ChromeOptions();
-	        options.addArguments("--no-sandbox"); // Required for running in Docker
-	        options.addArguments("--headless");
-	        options.addArguments("--allow-insecure-localhost");
-	        options.addArguments("--ignore-certificate-errors");
-	        options.setAcceptInsecureCerts(true);
-	      //  options.addArguments("--shm-size=2g");
-	        driver = new ChromeDriver(options);
-	       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
+    @BeforeEach
+    public void setUp() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--no-sandbox");
+        options.addArguments("--headless=new");
+        options.addArguments("--allow-insecure-localhost");
+        options.addArguments("--ignore-certificate-errors");
+        options.setAcceptInsecureCerts(true);
+
+        driver = new ChromeDriver(options);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
-    @AfterAll
-    public static void tearDown() {
+
+    @AfterEach
+    public void tearDown() {
         driver.quit();
     }
+
 
 
     @Test
