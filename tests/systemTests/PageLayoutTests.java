@@ -3,7 +3,7 @@
 * @author Kamil Kaygisiz kamil.kaygisiz1@ogr.sakarya.edu.tr
 * @since 18.05.2023
 * <p>
-* Page layout farklı cihazlar icin genel responsiveness testi 
+* Page layout farkli cihazlar icin genel responsiveness testi 
 * </p>
 */
 package systemTests;
@@ -11,50 +11,54 @@ package systemTests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.openqa.selenium.By;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
+
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
-import java.util.List;
-
+import java.util.NoSuchElementException;
+import java.util.logging.Logger;
+@ExtendWith(TestResultLogger.class)
 public class PageLayoutTests {
-    private WebDriver driver;
-    private WebDriverWait wait;
+    private static WebDriver driver;
+    private static WebDriverWait wait;
+    private static final Logger logger = Logger.getLogger(PageLayoutTests.class.getName());
 
-    @BeforeEach
-    public void setup() {
-        System.setProperty("webdriver.chrome.driver", "Drivers/chromedriver.exe");
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized"); // Maximize the browser window
-        driver = new ChromeDriver(options);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Initialize WebDriverWait with a timeout of 10 seconds
+    @BeforeAll
+    public static void setUp() {
+    	  ChromeOptions options = new ChromeOptions();
+	        options.addArguments("--no-sandbox"); // Required for running in Docker
+	        options.addArguments("--headless");
+	        options.addArguments("--allow-insecure-localhost");
+	        options.addArguments("--ignore-certificate-errors");
+	        options.setAcceptInsecureCerts(true);
+	      //  options.addArguments("--shm-size=2g");
+	        driver = new ChromeDriver(options);
+	       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
     }
-
-    @AfterEach
-    public void cleanup() {
+    @AfterAll
+    public static void tearDown() {
         driver.quit();
     }
+	     
 
     @Test
     public void testPageLayoutOnDifferentScreenSizes() throws InterruptedException {
+    	beforeEach();
+    	System.out.print("Page-layout farkli ekran boyutlari ile test basladi.");
+    	System.out.println();
         // Open Amazon website
         driver.get("https://www.amazon.com/");
 
@@ -85,6 +89,8 @@ public class PageLayoutTests {
 
     @Test
     public void testNavigationMenuOnDifferentScreenSizes() throws InterruptedException {
+    	beforeEach();
+    	System.out.print("Nav-menu farkli ekran boyutlari ile test basladi.");
         // Open Amazon website
         driver.get("https://www.amazon.com/");
 
@@ -101,10 +107,12 @@ public class PageLayoutTests {
             expandNavigationMenu();
             collapseNavigationMenu();
         }
-        System.out.print("Passed");
     }
     @Test
     public void testAmazonImageResponsiveness() throws InterruptedException {
+    	beforeEach();
+    	System.out.print("Image responsiveness testi basladi..");
+
         // Open Amazon website
         driver.get("https://www.amazon.com/");
 
@@ -120,8 +128,6 @@ public class PageLayoutTests {
 
             WebElement image = driver.findElement(By.tagName("img"));
             verifyImageResponsiveness(image);
-
-            System.out.println("Passed for screen size: " + screenSize);
         }
     }
 
@@ -139,18 +145,12 @@ public class PageLayoutTests {
     }
 
     private boolean verifyImageLoaded(WebElement image) {
-        // Check if the image is loaded by verifying the 'complete' property
         boolean isLoaded = (Boolean) ((JavascriptExecutor) driver).executeScript(
             "return arguments[0].complete",
             image
         );
         return isLoaded;
     }
-
-
-
-
-
     private void expandNavigationMenu() {
         WebElement navigationMenu = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-hamburger-menu")));
         navigationMenu.click();
@@ -168,5 +168,9 @@ public class PageLayoutTests {
             return false;
         }
     }
+    private void beforeEach() {
+    	driver.get("https://www.amazon.com");
+    }
+
 }
 

@@ -3,51 +3,55 @@
 * @author Kamil Kaygisiz kamil.kaygisiz1@ogr.sakarya.edu.tr
 * @since 9.05.2023
 * <p>
-* Sayfadaki left navbarın duzgun calistigini teyit eder her method için ayrica
+* Sayfadaki left navbarin duzgun calistigini teyit eder her method icin ayrica
 * aciklama ustlerine eklenmistir.
 * </p>
 */
 
 package systemTests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
-import org.openqa.selenium.JavascriptExecutor;
-
-import java.time.Duration;
-
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-class NavBarTests {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-	  private WebDriver driver;
-	  private WebDriverWait wait;
+import java.time.Duration;
+import java.util.logging.Logger;
+@ExtendWith(TestResultLogger.class)
+public class NavBarTests {
 
+    private static WebDriver driver;
+    private static WebDriverWait wait;
+    private static final Logger logger = Logger.getLogger(NavBarTests.class.getName());
 
-	    @BeforeEach
-	    public void setUp() {
-	        System.setProperty("webdriver.chrome.driver", "Drivers/chromedriver.exe");
-	        driver = new ChromeDriver();
-	        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-	        driver.get("https://www.amazon.com/");
-	        driver.manage().window().maximize();
-	    }
-
-	    @AfterEach
-	    public void tearDown() {
-	        // quit the browser
-	        driver.quit();
-	    }
+    @BeforeAll
+    public static void setUp() {
+    	  ChromeOptions options = new ChromeOptions();
+	        options.addArguments("--no-sandbox"); // Required for running in Docker
+	        options.addArguments("--headless");
+	        options.addArguments("--allow-insecure-localhost");
+	        options.addArguments("--ignore-certificate-errors");
+	        options.setAcceptInsecureCerts(true);
+	      //  options.addArguments("--shm-size=2g");
+	        driver = new ChromeDriver(options);
+	       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
+    }
+    @AfterAll
+    public static void tearDown() {
+        driver.quit();
+    }
 	    
 	/*
 	 * Find the navbar and click Shop by interest
@@ -55,6 +59,9 @@ class NavBarTests {
 	 */
 	    @Test
 	    public void testSlideOutNavigation() throws InterruptedException {
+	    	beforeEach();
+	    	System.out.print("Sliding navbar icindeki testler basladi");
+	    	System.out.println();
 	    	Thread.sleep(500);
 	        // Find the 'All' button and hover over it to reveal the slide out navigation
 	        WebElement allButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#nav-hamburger-menu")));
@@ -80,6 +87,9 @@ class NavBarTests {
 	     */
 	    @Test
 	    public void testNestedNavigation() throws InterruptedException {
+	    	beforeEach();
+	    	System.out.println("Navbar yonlendirme testi basladi..");
+	    	System.out.println();
 	    	Thread.sleep(500);
 	      WebElement navBar = driver.findElement(By.id("nav-main"));
 	      WebElement element = driver.findElement(By.xpath("//a[contains(text(),'Gift Cards')]"));
@@ -87,6 +97,9 @@ class NavBarTests {
 	      executor.executeScript("arguments[0].click();", element);
 	      wait.until(ExpectedConditions.titleContains("Gift Cards"));
 	      assertTrue(driver.getTitle().contains("Gift Cards"));
+	    }
+	    private void beforeEach() {
+	    	driver.get("https://www.amazon.com");
 	    }
 
 

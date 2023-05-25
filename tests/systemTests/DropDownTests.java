@@ -1,90 +1,100 @@
+/**
+*
+* @author Kamil Kaygisiz kamil.kaygisiz1@ogr.sakarya.edu.tr
+* @since 18.05.2023
+* <p>
+* DwopDown icerisinde kaydirma ,secim ,element sayisi gibi ozellikler test edildi
+* </p>
+*/
 package systemTests;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.openqa.selenium.support.ui.*;
 
 import java.time.Duration;
-	public class DropDownTests {
+import java.util.logging.Logger;
+@ExtendWith(TestResultLogger.class)
+public class DropDownTests {
 
-	    private WebDriver driver;
-	    private WebDriverWait wait;
+    private static WebDriver driver;
+    private static WebDriverWait wait;
+    private static final Logger logger = Logger.getLogger(DropDownTests.class.getName());
 
-	    @BeforeEach
-	    public void setUp() {
-	        ChromeOptions options = new ChromeOptions();
-	        options.addArguments("--start-maximized");
+
+    @BeforeAll
+    public static void setUp() {
+    	  ChromeOptions options = new ChromeOptions();
+	        options.addArguments("--no-sandbox"); // Required for running in Docker
+	        options.addArguments("--headless");
+	        options.addArguments("--allow-insecure-localhost");
+	        options.addArguments("--ignore-certificate-errors");
+	        options.setAcceptInsecureCerts(true);
+	      //  options.addArguments("--shm-size=2g");
 	        driver = new ChromeDriver(options);
-	        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-	    }
+	       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
+    }
+    @AfterAll
+    public static void tearDown() {
+        driver.quit();
+    }
 
-	    @AfterEach
-	    public void tearDown() {
-	        driver.quit();
-	    }
 
+    @Test
+    public void testDropdownDefaultOption() {
+    	System.out.print("Drowpdown default opsiyon testi basladi..");
+    	System.out.println();
+        driver.get("https://www.amazon.com/");
 
-	    @Test
-	    public void testDropdownDefaultOption() {
-	        driver.get("https://www.amazon.com/");
+        WebElement dropdownTrigger = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='nav-search-dropdown-card']")));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(dropdownTrigger).click().build().perform();
 
-	        WebElement dropdownTrigger = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='nav-search-dropdown-card']")));
-	        
-	        Actions actions = new Actions(driver);
-	        actions.moveToElement(dropdownTrigger).click().build().perform();
-	        
-	        WebElement dropdownOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//option[contains(text(),'All Departments')]")));
-	        String optionText = dropdownOption.getText();
-	        
-	        dropdownOption.click();
+        WebElement dropdownOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//option[contains(text(),'All Departments')]")));
+        String optionText = dropdownOption.getText();
 
-	        assertEquals(optionText, "All Departments");
-	    }	
+        dropdownOption.click();
 
-	    @Test
-	    public void testDropdownOptionsCount() {
-	        driver.get("https://www.amazon.com/");
+        Assertions.assertEquals(optionText, "All Departments", "Dropdown default option test failed.");
+        System.out.println("Dropdown default option test passed.");
+    }
 
-	        WebElement dropdownTrigger = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='nav-search-dropdown-card']")));
-	        dropdownTrigger.click();
+    @Test
+    public void testDropdownOptionsCount() {
+    	System.out.print("Drowpdown  opsiyon sayisi dogru mu testi basladi");
+    	System.out.println();
+        driver.get("https://www.amazon.com/");
 
-	      //  WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("select")));
-	       int optionsCount =wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy((By.tagName("option")))).size();
+        WebElement dropdownTrigger = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='nav-search-dropdown-card']")));
+        dropdownTrigger.click();
 
-	        assertTrue(optionsCount >= 0);
-	    }
-	    @Test
-	    public void isDropdownReallyWorks() {
-		    driver.get("https://www.amazon.com/");
-	
-	        WebElement dropdownTrigger = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='nav-search-dropdown-card']")));
-	        dropdownTrigger.click();
-	
-	        WebElement dropdownOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//option[contains(text(),'Automotive')]")));
-	        dropdownOption.click();
-	        String urlBefore=driver.getCurrentUrl();
-	        WebElement searchBox = driver.findElement(By.xpath("//input[@id='twotabsearchtextbox']"));
-	        searchBox.sendKeys("tire");
-	        searchBox.submit();
-	        String currentURL = driver.getCurrentUrl();
-	        assertNotEquals(urlBefore, currentURL);
+        int optionsCount = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.tagName("option"))).size();
 
-	    }
-	
-	    
-	    
-	
+        Assertions.assertTrue(optionsCount >= 0, "Dropdown options count test failed.");
+        System.out.println("Dropdown options count test passed.");
+    }
+
+    @Test
+    public void isDropdownReallyWorks() {
+    	System.out.print("Drowpdown opsiyon secim testi basladi");
+    	System.out.println();
+        driver.get("https://www.amazon.com/");
+
+        WebElement dropdownTrigger = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='nav-search-dropdown-card']")));
+        dropdownTrigger.click();
+
+        WebElement dropdownOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//option[contains(text(),'Automotive')]")));
+        dropdownOption.click();
+        String urlBefore = driver.getCurrentUrl();
+        WebElement searchBox = driver.findElement(By.xpath("//input[@id='twotabsearchtextbox']"));
+        searchBox.sendKeys("tire");
+        searchBox.submit();
+        String currentURL = driver.getCurrentUrl();
+        Assertions.assertNotEquals(urlBefore, currentURL, "Dropdown search test failed.");
+        System.out.println("Dropdown search test passed.");
+    }
 }

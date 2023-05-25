@@ -3,53 +3,61 @@
 * @author Kamil Kaygisiz kamil.kaygisiz1@ogr.sakarya.edu.tr
 * @since 9.05.2023
 * <p>
-* Sayfadaki sign up test edilir.Fake mail hizmeti veren siteler bile kullanılsa sitede ekstra koruma oldugu icin
+* Sayfadaki sign up test edilir.Fake mail hizmeti veren siteler bile kullanilsa sitede ekstra koruma oldugu icin
 * hardcoded daha once kayitli mailler ile test edildi.
 * </p>
 */
 
 package systemTests;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.*;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.*;
-import org.openqa.selenium.support.ui.*;
-import org.junit.runners.MethodSorters;
-
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.concurrent.TimeUnit;
-
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+import java.time.Duration;
+import java.util.logging.Logger;
+//some of this test inside test class will be failed intentionally
+//to test my internet connection ,because there are no wait statements 
+//it will be added
+@ExtendWith(TestResultLogger.class)
 public class Signuptests {
-    private WebDriver driver;
-    private WebDriverWait wait;
+    private static WebDriver driver;
+    private static WebDriverWait wait;
+    private static final Logger logger = Logger.getLogger(Signuptests.class.getName());
 
-    @BeforeEach
-    public void setup() {
-        System.setProperty("webdriver.chrome.driver", "Drivers/chromedriver.exe");
-        driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.get("https://www.amazon.com/");
+
+    @BeforeAll
+    public static void setUp() {
+    	  ChromeOptions options = new ChromeOptions();
+	        options.addArguments("--no-sandbox"); // Required for running in Docker
+	        options.addArguments("--headless");
+	        options.addArguments("--allow-insecure-localhost");
+	        options.addArguments("--ignore-certificate-errors");
+	        options.setAcceptInsecureCerts(true);
+	      //  options.addArguments("--shm-size=2g");
+	        driver = new ChromeDriver(options);
+	       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
     }
-
-    @AfterEach
-    public void cleanup() {
+    @AfterAll
+    public static void tearDown() {
         driver.quit();
     }
+    
 
     @Test
     public void testSuccessfulSignUp() {
+		beforeEach();
+    	System.out.println("Sign-up testi basladi..");
+    	System.out.println();
         navigateToSignUpPage();
 
         String email = "example@example.com"; 
@@ -63,6 +71,9 @@ public class Signuptests {
 
     @Test
     public void testWeakPassword() {
+    	beforeEach();
+    	System.out.println("Weak password testi basladi..");
+    	System.out.println();
         navigateToSignUpPage();
 
         String email = "example2@example.com"; 
@@ -77,6 +88,10 @@ public class Signuptests {
 
     @Test
     public void testInvalidEmail() {
+    	beforeEach();
+    	System.out.println("Gecersiz email testi basladi..");
+    	System.out.println();
+
         navigateToSignUpPage();
 
         fillRegistrationForm("Kygsz kygsz", "invalidemail", "yourpassword", "yourpassword");
@@ -90,6 +105,10 @@ public class Signuptests {
 
     @Test
     public void testExistingEmail() {
+    	beforeEach();
+    	System.out.println("Var-olan mail ile sign-up testi basladi..");
+    	System.out.println();
+
         navigateToSignUpPage();
 
         fillRegistrationForm("Kygsz kygsz", "existingemail@example.com", "yourpassword", "yourpassword");
@@ -111,6 +130,7 @@ public class Signuptests {
 
 
     private void navigateToSignUpPage() {
+    	beforeEach();
         WebElement signInLink = driver.findElement(By.id("nav-link-accountList"));
         signInLink.click();
 
@@ -119,6 +139,7 @@ public class Signuptests {
     }
 
     private void fillRegistrationForm(String name, String email, String password, String confirmPassword) {
+    	beforeEach();
         WebElement nameField = driver.findElement(By.id("ap_customer_name"));
         nameField.sendKeys(name);
 
@@ -137,6 +158,8 @@ public class Signuptests {
         WebElement createAccountSubmit = driver.findElement(By.id("continue"));
         createAccountSubmit.click();
     }
-
+    private void beforeEach() {
+    	driver.get("https://www.amazon.com");
+    }
 
 }

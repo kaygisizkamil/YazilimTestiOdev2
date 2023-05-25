@@ -3,59 +3,63 @@
 * @author Kamil Kaygisiz kamil.kaygisiz1@ogr.sakarya.edu.tr
 * @since 9.05.2023
 * <p>
-* Sayfadaki left navbara tıklayınca acılan checkboxların islevselligi , duzgun calistigini teyit 
+* Sayfadaki left navbara tiklayinca acilan checkboxlarin islevselligi , duzgun calistigini teyit 
 * </p>
 */
 
 package systemTests;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-
-import org.openqa.selenium.JavascriptExecutor;
-
-import java.time.Duration;
-import java.util.List;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class CheckBoxTests {
-	private WebDriver driver;
-	private WebDriverWait wait;
-	private int  pageHeight;
-    @BeforeEach
-    public void setUp() throws InterruptedException {
-        System.setProperty("webdriver.chrome.driver", "Drivers/chromedriver.exe");
-        driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.manage().window().maximize();
-        // Navigate to Amazon homepage
-        driver.get("https://www.amazon.com");
-	    JavascriptExecutor executor = (JavascriptExecutor) driver;
-	    pageHeight = driver.manage().window().getSize().getHeight();
-        // Click on Gift Cards link in the navbar
-        WebElement navBar = driver.findElement(By.id("nav-main"));
-	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Gift Cards')]")));
-	    executor.executeScript("arguments[0].click();", element);
-	    wait.until(ExpectedConditions.titleContains("Gift Cards"));
-	    Thread.sleep(500);
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import java.time.Duration;
+import java.util.logging.Logger;
+@ExtendWith(TestResultLogger.class)
+
+public class CheckBoxTests {
+
+	private int  pageHeight;
+  
+  
+    private static WebDriver driver;
+    private static WebDriverWait wait;
+    private static final Logger logger = Logger.getLogger(CheckBoxTests.class.getName());
+
+
+    @BeforeAll
+    public static void setUp() {
+    	  ChromeOptions options = new ChromeOptions();
+	        options.addArguments("--no-sandbox"); // Required for running in Docker
+	        options.addArguments("--headless");
+	        options.addArguments("--allow-insecure-localhost");
+	        options.addArguments("--ignore-certificate-errors");
+	        options.setAcceptInsecureCerts(true);
+	      //  options.addArguments("--shm-size=2g");
+	        driver = new ChromeDriver(options);
+	       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
     }
-	@AfterEach
-	public void tearDown() {
-		driver.quit();
-	}
+    @AfterAll
+    public static void tearDown() {
+        driver.quit();
+    }
+
 	@Test
     public void testCheckbox() throws InterruptedException {
+		//@annnotationu yerine mainde ekstra yuke girmemek icin boyle bir cozum urettim
+		 beforeEach() ;
+		System.out.println("Checkbox click testi basladi");
+    	System.out.println();
     	String urlToBeReturned="https://www.amazon.com/gp/browse.html?node=2238192011&ref_=nav_em_hmc_gc_allgc_0_2_27_2";
         driver.get("https://www.amazon.com/gp/browse.html?node=2238192011&ref_=nav_em_hmc_gc_allgc_0_2_27_2");
 
@@ -104,6 +108,9 @@ public class CheckBoxTests {
 	 */
     @Test
     public void testNestedCheckbox() throws InterruptedException {
+    	 beforeEach() ;
+    	System.out.println("Nested Checkbox testi basladi");
+    	System.out.println();
         driver.get("https://www.amazon.com/s?i=gift-cards&bbn=2238192011&rh=n%3A2238192011%2Cp_n_format_browse-bin%3A2740964011&dc&ds=v1%3AzD7MwieAJFvsVUZxGKGcffaMRUoIJZja17r2%2FDIdidA&qid=1683763332&ref=sr_ex_n_1");        
         By resultPath=By.xpath("//body/div[@id='a-page']/div[@id='search']/span[1]/div[1]/h1[1]/div[1]/div[1]/div[1]/div[1]/span[1]");
         WebElement howMany = wait.until(ExpectedConditions.visibilityOfElementLocated(resultPath));
@@ -119,6 +126,20 @@ public class CheckBoxTests {
         
         assertNotEquals(resultCount,resultCount2);
             	
+    }
+    public void beforeEach() throws InterruptedException {
+        //driver.manage().window().maximize();
+        // Navigate to Amazon homepage
+        driver.get("https://www.amazon.com");
+	    JavascriptExecutor executor = (JavascriptExecutor) driver;
+	    pageHeight = driver.manage().window().getSize().getHeight();
+        // Click on Gift Cards link in the navbar
+        WebElement navBar = driver.findElement(By.id("nav-main"));
+	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Gift Cards')]")));
+	    executor.executeScript("arguments[0].click();", element);
+	    wait.until(ExpectedConditions.titleContains("Gift Cards"));
+	    Thread.sleep(500);
+
     }
 	
 	

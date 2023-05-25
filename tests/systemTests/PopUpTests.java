@@ -3,34 +3,39 @@
 * @author Kamil Kaygisiz kamil.kaygisiz1@ogr.sakarya.edu.tr
 * @since 9.05.2023
 * <p>
-* Sayfadaki bazı popUpların duzgun calistigini teyit eder her method için ayrica
+* Sayfadaki bazi popUplarin duzgun calistigini teyit eder her method icin ayrica
 * aciklama ustlerine eklenmistir.
 * </p>
 */
 
 
 package systemTests;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.List;
-import org.openqa.selenium.interactions.Actions;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.junit.jupiter.api.*;
-
-
 
 /*<div id="parent">
   <h1 id="nav-link-accountList-nav-line-1">Title</h1>
@@ -39,20 +44,27 @@ import org.junit.jupiter.api.*;
 
 WebElement signInButton = driver.findElement(By.cssSelector("#parent #nav-link-accountList-nav-line-1:nth-of-type(2)"));
 */
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ExtendWith(TestResultLogger.class)
 public class PopUpTests {
-    private WebDriver driver;
+    private static WebDriver driver;
+    private static WebDriverWait wait;
+    private static final Logger logger = Logger.getLogger(PopUpTests.class.getName());
 
-    @Before
-    public void setUp() {
-        System.setProperty("webdriver.chrome.driver", "Drivers/chromedriver.exe");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
+
+    @BeforeAll
+    public static void setUp() {
+    	  ChromeOptions options = new ChromeOptions();
+	        options.addArguments("--no-sandbox"); // Required for running in Docker
+	        options.addArguments("--headless");
+	        options.addArguments("--allow-insecure-localhost");
+	        options.addArguments("--ignore-certificate-errors");
+	        options.setAcceptInsecureCerts(true);
+	      //  options.addArguments("--shm-size=2g");
+	        driver = new ChromeDriver(options);
+	       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
     }
-
-    @After
-    public void tearDown() {
-        // quit the browser
+    @AfterAll
+    public static void tearDown() {
         driver.quit();
     }
     
@@ -61,15 +73,15 @@ public class PopUpTests {
      * so there is no way to pass that without ai, i left it as it is did not try with
      * that approach
      */
-    @Order(3)
     @Test
     public void signInPopUpTest() throws InterruptedException {
+	    	 beforeEach() ;
+    	System.out.println("Acilista gelen signin pop-up testi basladi..");
+    	System.out.println();
         // Create a WebDriverWait object with a timeout of 10 seconds
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         // Navigate to the Amazon homepage
         driver.get("https://www.amazon.com/");
-
         // Move the mouse to the "Hello, Sign in" button and click on it
         WebElement signInButton = driver.findElement(By.cssSelector("#nav-link-accountList-nav-line-1"));
         Actions actions = new Actions(driver);
@@ -104,9 +116,11 @@ public class PopUpTests {
      * in the search area enter a keyword wait till suggestion ul-li comes after 
      * it is visible clik the first one and then control if it is displayed or not
      */
-    @Order(2)
     @Test
     public void searchSuggestionPopUpTest() {
+    	beforeEach() ;
+    	System.out.println("Acilista gelen oneri (suggestion) pop-up testi basladi..");
+    	System.out.println();
         // Navigate to the Amazon homepage
         driver.get("https://www.amazon.com/");
 
@@ -115,7 +129,7 @@ public class PopUpTests {
         searchBox.sendKeys("laptop");
 
         // Verify that the search suggestion pop-up appears with relevant search suggestions
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+       // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement searchSuggestionPopUp = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-flyout-searchAjax")));
         assertTrue(searchSuggestionPopUp.isDisplayed());
 
@@ -141,10 +155,13 @@ public class PopUpTests {
      * it can cause an error if user deletes the comment or product gets deleted but 
      * it looks like it has been 3 years comment is still in there
      */
-    @Order(1)
+   
     @Test
     public void feedbackPopUpTest() throws InterruptedException {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+    	beforeEach() ;
+    	System.out.println("Feedback pop-up testi basladi..");
+    	System.out.println();
+       // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         // Navigate to a product page on Amazon
         driver.get("https://www.amazon.com/dp/B08L6PCZTR");
         // Click on the "Write a customer review" button       
@@ -158,9 +175,12 @@ public class PopUpTests {
     /*this popups may not appear in every page opening, so i used that niside try catch
      * also showing implicit-explicit wait i used a manual sleep in here 
      */
-    @Order(4)
+   
     @Test
     public void closeAdressPopUp() {
+    	beforeEach() ;
+    	System.out.print("Adress pop-up kapatma testi basladi");
+    	System.out.println();
         driver.get("https://www.amazon.com/");
         try {
             Thread.sleep(5000); // Wait for 5 seconds for the pop-up to appear
@@ -175,7 +195,11 @@ public class PopUpTests {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-      //  Assertions.assertTrue(driver.findElements(By.cssSelector(".a-button-inner")).isEmpty(), "Pop-up not closed successfully.");
+        //suspicious
+        assertTrue(driver.findElements(By.cssSelector(".a-button-inner")).isEmpty(), "Pop-up not closed successfully.");
+    }
+    private void beforeEach() {
+    	driver.get("https://www.amazon.com");
     }
 
     
