@@ -24,6 +24,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.time.Duration;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 @ExtendWith(TestResultLogger.class)
 
@@ -60,6 +61,8 @@ public class CheckBoxTests {
 		 beforeEach() ;
 		System.out.println("Checkbox click testi basladi");
     	System.out.println();
+    	logger.log(Level.INFO, "Click to checkbox");
+
     	String urlToBeReturned="https://www.amazon.com/gp/browse.html?node=2238192011&ref_=nav_em_hmc_gc_allgc_0_2_27_2";
         driver.get("https://www.amazon.com/gp/browse.html?node=2238192011&ref_=nav_em_hmc_gc_allgc_0_2_27_2");
 
@@ -110,6 +113,8 @@ public class CheckBoxTests {
     public void testNestedCheckbox() throws InterruptedException {
     	 beforeEach() ;
     	System.out.println("Nested Checkbox testi basladi");
+    	logger.log(Level.INFO, "Click to checkbox twice (nested)");
+
     	System.out.println();
         driver.get("https://www.amazon.com/s?i=gift-cards&bbn=2238192011&rh=n%3A2238192011%2Cp_n_format_browse-bin%3A2740964011&dc&ds=v1%3AzD7MwieAJFvsVUZxGKGcffaMRUoIJZja17r2%2FDIdidA&qid=1683763332&ref=sr_ex_n_1");        
         By resultPath=By.xpath("//body/div[@id='a-page']/div[@id='search']/span[1]/div[1]/h1[1]/div[1]/div[1]/div[1]/div[1]/span[1]");
