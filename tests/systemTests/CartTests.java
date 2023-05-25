@@ -113,7 +113,7 @@ public class CartTests {
     public void testUpdateProductQuantityInCart() {
     	System.out.print("Sepetteki urun miktarini degistirme testi");
     	System.out.println();
-    	logger.log(Level.INFO, "Update ");
+    	logger.log(Level.INFO, "Update");
 
         driver.get("https://www.amazon.com/Placemat-Protect-Resistant-Wipeable-Accessories/dp/B0BGMJXTBX/ref=sr_1_1?crid=IBML6MYDLJ4A&keywords=Dinnerware%2B%26%2Baccessories&pd_rd_r=17d7a2a0-faba-423f-ac87-ebcb4d293285&pd_rd_w=l6K9T&pd_rd_wg=USyFS&pf_rd_p=c9097eb6-837b-4ba7-94d7-51428f6e8d2a&pf_rd_r=WK6ZJCDRGWY1BWGC84TA&qid=1684440349&sprefix=dinnerware%2B%26%2Baccessorie%2Caps%2C190&sr=8-1&th=1");
 
