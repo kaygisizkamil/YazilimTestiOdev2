@@ -56,7 +56,8 @@ public class PageLayoutTests {
 
     @Test
     public void testPageLayoutOnDifferentScreenSizes() throws InterruptedException {
-    	beforeEach();
+    	driver.get("https://www.amazon.com");
+
     	System.out.print("Page-layout farkli ekran boyutlari ile test basladi.");
     	System.out.println();
         // Open Amazon website
@@ -81,7 +82,7 @@ public class PageLayoutTests {
         verifyPageLayout();
     }
 
-    private void verifyPageLayout() {
+    public void verifyPageLayout() {
         assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-logo-sprites"))).isDisplayed(), "Logo is not displayed");
         assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-search"))).isDisplayed(), "Search bar is not displayed");
         assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-xshop"))).isDisplayed(), "Navigation menu is not displayed");
@@ -89,7 +90,8 @@ public class PageLayoutTests {
 
     @Test
     public void testNavigationMenuOnDifferentScreenSizes() throws InterruptedException {
-    	beforeEach();
+    	driver.get("https://www.amazon.com");
+
     	System.out.print("Nav-menu farkli ekran boyutlari ile test basladi.");
         // Open Amazon website
         driver.get("https://www.amazon.com/");
@@ -110,7 +112,8 @@ public class PageLayoutTests {
     }
     @Test
     public void testAmazonImageResponsiveness() throws InterruptedException {
-    	beforeEach();
+    	driver.get("https://www.amazon.com");
+
     	System.out.print("Image responsiveness testi basladi..");
 
         // Open Amazon website
@@ -144,33 +147,23 @@ public class PageLayoutTests {
         assertTrue(verifyImageLoaded(image), "Image failed to load");
     }
 
-    private boolean verifyImageLoaded(WebElement image) {
+    public boolean verifyImageLoaded(WebElement image) {
         boolean isLoaded = (Boolean) ((JavascriptExecutor) driver).executeScript(
             "return arguments[0].complete",
             image
         );
         return isLoaded;
     }
-    private void expandNavigationMenu() {
+    public void expandNavigationMenu() {
         WebElement navigationMenu = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-hamburger-menu")));
         navigationMenu.click();
     }
 
-    private void collapseNavigationMenu() {
+    public  void collapseNavigationMenu() {
         WebElement closeButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//body/div[@id='hmenu-container']/div[@id='hmenu-canvas-background']/div[1]")));
         closeButton.click();
     }
 
-    private boolean isElementDisplayed(By locator) {
-        try {
-            return driver.findElement(locator).isDisplayed();
-        } catch (NoSuchElementException e) {
-            return false;
-        }
-    }
-    private void beforeEach() {
-    	driver.get("https://www.amazon.com");
-    }
 
 }
 
