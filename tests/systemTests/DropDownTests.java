@@ -17,6 +17,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
 
 import java.time.Duration;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 @ExtendWith(TestResultLogger.class)
 public class DropDownTests {
@@ -49,7 +50,7 @@ public class DropDownTests {
     	System.out.print("Drowpdown default opsiyon testi basladi..");
     	System.out.println();
         driver.get("https://www.amazon.com/");
-
+    	logger.log(Level.INFO, "Open the amazon find the dropdown..");
         WebElement dropdownTrigger = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='nav-search-dropdown-card']")));
         Actions actions = new Actions(driver);
         actions.moveToElement(dropdownTrigger).click().build().perform();
@@ -67,6 +68,7 @@ public class DropDownTests {
     public void testDropdownOptionsCount() {
     	System.out.print("Drowpdown  opsiyon sayisi dogru mu testi basladi");
     	System.out.println();
+    	logger.log(Level.INFO, "To Control are the number matches");
         driver.get("https://www.amazon.com/");
 
         WebElement dropdownTrigger = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='nav-search-dropdown-card']")));
@@ -82,7 +84,10 @@ public class DropDownTests {
     public void isDropdownReallyWorks() {
     	System.out.print("Drowpdown opsiyon secim testi basladi");
     	System.out.println();
+    	logger.log(Level.INFO, "Secim testi..");
+
         driver.get("https://www.amazon.com/");
+        
 
         WebElement dropdownTrigger = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='nav-search-dropdown-card']")));
         dropdownTrigger.click();
