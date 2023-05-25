@@ -75,7 +75,7 @@ public class PopUpTests {
      */
     @Test
     public void signInPopUpTest() throws InterruptedException {
-	    	 beforeEach() ;
+    	driver.get("https://www.amazon.com");
     	System.out.println("Acilista gelen signin pop-up testi basladi..");
     	System.out.println();
         // Create a WebDriverWait object with a timeout of 10 seconds
@@ -118,7 +118,7 @@ public class PopUpTests {
      */
     @Test
     public void searchSuggestionPopUpTest() {
-    	beforeEach() ;
+    	driver.get("https://www.amazon.com");
     	System.out.println("Acilista gelen oneri (suggestion) pop-up testi basladi..");
     	System.out.println();
         // Navigate to the Amazon homepage
@@ -158,7 +158,7 @@ public class PopUpTests {
    
     @Test
     public void feedbackPopUpTest() throws InterruptedException {
-    	beforeEach() ;
+    	driver.get("https://www.amazon.com");
     	System.out.println("Feedback pop-up testi basladi..");
     	System.out.println();
        // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -178,7 +178,7 @@ public class PopUpTests {
    
     @Test
     public void closeAdressPopUp() {
-    	beforeEach() ;
+    	driver.get("https://www.amazon.com");
     	System.out.print("Adress pop-up kapatma testi basladi");
     	System.out.println();
         driver.get("https://www.amazon.com/");
@@ -198,9 +198,7 @@ public class PopUpTests {
         //suspicious
         assertTrue(driver.findElements(By.cssSelector(".a-button-inner")).isEmpty(), "Pop-up not closed successfully.");
     }
-    private void beforeEach() {
-    	driver.get("https://www.amazon.com");
-    }
+
 
     
   

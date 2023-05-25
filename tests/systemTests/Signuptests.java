@@ -55,7 +55,7 @@ public class Signuptests {
 
     @Test
     public void testSuccessfulSignUp() {
-		beforeEach();
+    	driver.get("https://www.amazon.com");
     	System.out.println("Sign-up testi basladi..");
     	System.out.println();
         navigateToSignUpPage();
@@ -71,7 +71,7 @@ public class Signuptests {
 
     @Test
     public void testWeakPassword() {
-    	beforeEach();
+    	driver.get("https://www.amazon.com");
     	System.out.println("Weak password testi basladi..");
     	System.out.println();
         navigateToSignUpPage();
@@ -88,7 +88,7 @@ public class Signuptests {
 
     @Test
     public void testInvalidEmail() {
-    	beforeEach();
+    	driver.get("https://www.amazon.com");
     	System.out.println("Gecersiz email testi basladi..");
     	System.out.println();
 
@@ -105,7 +105,7 @@ public class Signuptests {
 
     @Test
     public void testExistingEmail() {
-    	beforeEach();
+    	driver.get("https://www.amazon.com");
     	System.out.println("Var-olan mail ile sign-up testi basladi..");
     	System.out.println();
 
@@ -129,8 +129,8 @@ public class Signuptests {
     }
 
 
-    private void navigateToSignUpPage() {
-    	beforeEach();
+    public void navigateToSignUpPage() {
+    	driver.get("https://www.amazon.com");
         WebElement signInLink = driver.findElement(By.id("nav-link-accountList"));
         signInLink.click();
 
@@ -138,8 +138,8 @@ public class Signuptests {
         createAccountButton.click();
     }
 
-    private void fillRegistrationForm(String name, String email, String password, String confirmPassword) {
-    	beforeEach();
+    public void fillRegistrationForm(String name, String email, String password, String confirmPassword) {
+    	driver.get("https://www.amazon.com");
         WebElement nameField = driver.findElement(By.id("ap_customer_name"));
         nameField.sendKeys(name);
 
@@ -154,12 +154,10 @@ public class Signuptests {
         reEnterPasswordField.sendKeys(confirmPassword);
     }
 
-    private void submitForm() {
+    public void submitForm() {
         WebElement createAccountSubmit = driver.findElement(By.id("continue"));
         createAccountSubmit.click();
     }
-    private void beforeEach() {
-    	driver.get("https://www.amazon.com");
-    }
+   
 
 }

@@ -37,13 +37,18 @@ import java.util.*;
 
 public class TestMenu {
     public static void main(String[] args) {
-    	System.out.println("Sistem testleri menusune hosgeldiniz. ");
+    	System.out.println("***** Sistem testleri menusune hosgeldiniz. *****");
     	System.out.println("Lutfen calistirmak istediginiz testi seciniz");
     	System.out.println("Testler --headless modda calismaktadir");
-    	System.out.println("Jdk base image'ine kurulmus chrome tarayicisinda testler gerceklesecektir");
+    	System.out.println("Jdk base image,  chrome tarayicisi kurulup testler gerceklesecektir");
+    	System.out.println("Lutfen calistirmak istediginiz testi seciniz");
+    	System.out.println("IPv6 addresleri dinlemeye calistigi icin gelen");
+    	System.out.println("bind() failed: Cannot assign requested address (99) uyarisi");
+    	System.out.println("Projeye engel teskil etmez testler IPv4 kullanmaktadır(safe to ignore dont affect tests)");
+    	System.out.println("***** 8 farklı kategori 30 farklı test amazon.com sitesi sistem testleri.. *****");
 
     	System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-    	 
+
         boolean running = true;
         Scanner scanner = new Scanner(System.in);
 
