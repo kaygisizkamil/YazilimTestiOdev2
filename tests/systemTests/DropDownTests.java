@@ -9,6 +9,7 @@
 package systemTests;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -19,10 +20,11 @@ import org.openqa.selenium.support.ui.*;
 import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+@TestInstance(Lifecycle.PER_CLASS)
 public class DropDownTests {
 
-    private static WebDriver driver;
-    private static WebDriverWait wait;
+    private  WebDriver driver;
+    private  WebDriverWait wait;
     private static final Logger logger = Logger.getLogger(DropDownTests.class.getName());
 
 

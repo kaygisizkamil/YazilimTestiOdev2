@@ -85,9 +85,9 @@ public class TestMenu {
         testClasses.put(8, CartTests.class);
         Class<?> selectedTestClass = testClasses.get(testNumber);
         if (selectedTestClass != null) {
-            invokeBeforeAll(selectedTestClass);
+         //   invokeBeforeAll(selectedTestClass);
             executeTest(selectedTestClass);
-            invokeAfterAll(selectedTestClass);
+            //invokeAfterAll(selectedTestClass);
         } else {
             System.out.println("Gecersiz secenek .");
         }
@@ -112,25 +112,8 @@ public class TestMenu {
 
         System.out.println("Total tests: " + summary.getTestsFoundCount()+"tamamlandi");
       
-
     }
-    private static void invokeBeforeAll(Class<?> testClass) {
-        Method[] methods = testClass.getDeclaredMethods();
-        for (Method method : methods) {
-            if (method.isAnnotationPresent(BeforeAll.class)) {
-                ReflectionSupport.invokeMethod(method, null);
-            }
-        }
-    }
-
-    private static void invokeAfterAll(Class<?> testClass) {
-        Method[] methods = testClass.getDeclaredMethods();
-        for (Method method : methods) {
-            if (method.isAnnotationPresent(AfterAll.class)) {
-                ReflectionSupport.invokeMethod(method, null);
-            }
-        }
-    }
+    
 
     private static void displayMainMenu() {
         System.out.println("Calistirmak istediginiz testi secin ('q' to exit):");

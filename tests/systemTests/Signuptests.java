@@ -29,13 +29,13 @@ import java.util.logging.Logger;
 //to test my internet connection ,because there are no wait statements 
 //it will be added
 public class Signuptests {
-    private static WebDriver driver;
-    private static WebDriverWait wait;
+    private  WebDriver driver;
+    private WebDriverWait wait;
     private static final Logger logger = Logger.getLogger(Signuptests.class.getName());
 
 
     @BeforeAll
-    public static void setUp() {
+    public  void setUp() {
     	  ChromeOptions options = new ChromeOptions();
 	        options.addArguments("--no-sandbox"); // Required for running in Docker
 	        options.addArguments("--headless=new");
@@ -47,7 +47,7 @@ public class Signuptests {
 	       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
     }
     @AfterAll
-    public static void tearDown() {
+    public  void tearDown() {
         driver.quit();
     }
     

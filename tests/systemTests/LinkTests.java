@@ -14,6 +14,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -29,17 +31,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+@TestInstance(Lifecycle.PER_CLASS)
 public class LinkTests {
 
 		
-	    private static WebDriver driver;
-	    private static WebDriverWait wait;
+	    private  WebDriver driver;
+	    private WebDriverWait wait;
 	    private static final Logger logger = Logger.getLogger(LinkTests.class.getName());
 	
 	
 	    @BeforeAll
-	    public static void setUp() {
+	    public  void setUp() {
 	    	  ChromeOptions options = new ChromeOptions();
 		        options.addArguments("--no-sandbox"); // Required for running in Docker
 		        options.addArguments("--headless=new");
@@ -51,7 +53,7 @@ public class LinkTests {
 		       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
 	    }
 	    @AfterAll
-	    public static void tearDown() {
+	    public  void tearDown() {
 	        driver.quit();
 	    }
 	    @Test
