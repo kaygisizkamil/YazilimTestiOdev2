@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-@ExtendWith(TestResultLogger.class)
+
 public class LinkTests {
 
 		

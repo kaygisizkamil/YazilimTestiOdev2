@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.Duration;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
-@ExtendWith(TestResultLogger.class)
+
 public class PageLayoutTests {
     private static WebDriver driver;
     private static WebDriverWait wait;

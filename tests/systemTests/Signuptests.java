@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 //some of this test inside test class will be failed intentionally
 //to test my internet connection ,because there are no wait statements 
 //it will be added
-@ExtendWith(TestResultLogger.class)
 public class Signuptests {
     private static WebDriver driver;
     private static WebDriverWait wait;

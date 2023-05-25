@@ -44,7 +44,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 WebElement signInButton = driver.findElement(By.cssSelector("#parent #nav-link-accountList-nav-line-1:nth-of-type(2)"));
 */
-@ExtendWith(TestResultLogger.class)
+
 public class PopUpTests {
     private static WebDriver driver;
     private static WebDriverWait wait;

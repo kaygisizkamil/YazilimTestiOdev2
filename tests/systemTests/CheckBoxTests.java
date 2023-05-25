@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-@ExtendWith(TestResultLogger.class)
+//@ExtendWith(TestResultLogger.class)
 
 public class CheckBoxTests {
 
@@ -126,9 +126,9 @@ public class CheckBoxTests {
    	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Gift Cards')]")));
    	    executor.executeScript("arguments[0].click();", element);
    	    wait.until(ExpectedConditions.titleContains("Gift Cards"));
-   	    Thread.sleep(500);    	 
+   	    //Thread.sleep(500);    	 
     	System.out.println("Nested Checkbox testi basladi");
-    	logger.log(Level.INFO, "Click to checkbox twice (nested)");
+    	//logger.log(Level.INFO, "Click to checkbox twice (nested)");
 
     	System.out.println();
         driver.get("https://www.amazon.com/s?i=gift-cards&bbn=2238192011&rh=n%3A2238192011%2Cp_n_format_browse-bin%3A2740964011&dc&ds=v1%3AzD7MwieAJFvsVUZxGKGcffaMRUoIJZja17r2%2FDIdidA&qid=1683763332&ref=sr_ex_n_1");        

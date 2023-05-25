@@ -19,7 +19,6 @@ import org.openqa.selenium.support.ui.*;
 import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-@ExtendWith(TestResultLogger.class)
 public class DropDownTests {
 
     private static WebDriver driver;
@@ -34,6 +33,7 @@ public class DropDownTests {
         options.addArguments("--headless=new");
         options.addArguments("--allow-insecure-localhost");
         options.addArguments("--ignore-certificate-errors");
+        
         options.setAcceptInsecureCerts(true);
 
         driver = new ChromeDriver(options);
