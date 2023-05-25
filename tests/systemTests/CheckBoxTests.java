@@ -57,8 +57,15 @@ public class CheckBoxTests {
 
 	@Test
     public void testCheckbox() throws InterruptedException {
-		//@annnotationu yerine mainde ekstra yuke girmemek icin boyle bir cozum urettim
-		 beforeEach() ;
+		    driver.get("https://www.amazon.com");
+		    JavascriptExecutor executor = (JavascriptExecutor) driver;
+		    pageHeight = driver.manage().window().getSize().getHeight();
+	        // Click on Gift Cards link in the navbar
+	        WebElement navBar = driver.findElement(By.id("nav-main"));
+		    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Gift Cards')]")));
+		    executor.executeScript("arguments[0].click();", element);
+		    wait.until(ExpectedConditions.titleContains("Gift Cards"));
+		    Thread.sleep(500);
 		System.out.println("Checkbox click testi basladi");
     	System.out.println();
     	logger.log(Level.INFO, "Click to checkbox");
@@ -111,7 +118,15 @@ public class CheckBoxTests {
 	 */
     @Test
     public void testNestedCheckbox() throws InterruptedException {
-    	 beforeEach() ;
+    	   driver.get("https://www.amazon.com");
+	   	    JavascriptExecutor executor = (JavascriptExecutor) driver;
+	   	    pageHeight = driver.manage().window().getSize().getHeight();
+	           // Click on Gift Cards link in the navbar
+           WebElement navBar = driver.findElement(By.id("nav-main"));
+   	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Gift Cards')]")));
+   	    executor.executeScript("arguments[0].click();", element);
+   	    wait.until(ExpectedConditions.titleContains("Gift Cards"));
+   	    Thread.sleep(500);    	 
     	System.out.println("Nested Checkbox testi basladi");
     	logger.log(Level.INFO, "Click to checkbox twice (nested)");
 
@@ -132,20 +147,7 @@ public class CheckBoxTests {
         assertNotEquals(resultCount,resultCount2);
             	
     }
-    public void beforeEach() throws InterruptedException {
-        //driver.manage().window().maximize();
-        // Navigate to Amazon homepage
-        driver.get("https://www.amazon.com");
-	    JavascriptExecutor executor = (JavascriptExecutor) driver;
-	    pageHeight = driver.manage().window().getSize().getHeight();
-        // Click on Gift Cards link in the navbar
-        WebElement navBar = driver.findElement(By.id("nav-main"));
-	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Gift Cards')]")));
-	    executor.executeScript("arguments[0].click();", element);
-	    wait.until(ExpectedConditions.titleContains("Gift Cards"));
-	    Thread.sleep(500);
-
-    }
+    
 	
 	
 	

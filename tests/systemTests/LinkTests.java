@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 @ExtendWith(TestResultLogger.class)
 public class LinkTests {
@@ -57,6 +58,8 @@ public class LinkTests {
 	    public void testSignInLink() {
 	    	System.out.println("Sign in butonuna tiklandiginda yonlendirme dogru link mi testi basladi..");
 	    	System.out.println();
+	    	logger.log(Level.INFO, "Signin click redirected....");
+
 	        driver.get("https://www.amazon.com/");
 	        WebElement signInLink = driver.findElement(By.cssSelector("#nav-link-accountList-nav-line-1"));
 	        signInLink.click();
@@ -71,6 +74,8 @@ public class LinkTests {
 	    public void testCartLink() {
 	       	System.out.println("Sepet butonuna tiklandiginda yonlendirme dogru link mi testi basladi..");
 	    	System.out.println();
+	    	logger.log(Level.INFO, "Cart click redirected....");
+
 	        driver.get("https://www.amazon.com/");
 	        WebElement cartLink = driver.findElement(By.id("nav-cart"));
 	        cartLink.click();
@@ -84,6 +89,7 @@ public class LinkTests {
 	    public void testHelpLink() {
 	       	System.out.println("Help  butonuna tiklandiginda yonlendirme dogru link mi testi basladi..");
 	    	System.out.println();
+	    	logger.log(Level.INFO, "Help click redirected....");
 	        driver.get("https://www.amazon.com/");
 	        WebElement helpLink = driver.findElement(By.linkText("Help"));
 	        helpLink.click();
@@ -97,6 +103,7 @@ public class LinkTests {
 	    public void testSearchLink() {
 	       	System.out.println("Arama butonu tiklandiginda yonlendirme dogru link mi testi basladi..");
 	    	System.out.println();
+	    	logger.log(Level.INFO, "Search click redirected....");
 	        driver.get("https://www.amazon.com/");
 	        WebElement searchButton = driver.findElement(By.cssSelector(".nav-search-submit .nav-input"));
 	        searchButton.click();
@@ -110,6 +117,7 @@ public class LinkTests {
 	    public void testOrdersLink() {
 	       	System.out.println("Siparislerim  butonu tiklandiginda yonlendirme dogru link mi testi basladi..");
 	    	System.out.println();
+	    	logger.log(Level.INFO, "Order click redirected....");
 	        driver.get("https://www.amazon.com/");
 	        WebElement ordersLink = driver.findElement(By.id("nav-orders"));
 	        ordersLink.click();
@@ -123,6 +131,7 @@ public class LinkTests {
 	    public void testNavRecursiveLink() {
 	       	System.out.println("Ayni sayfada kalmayı garanti etmesi gereken link calisiyor mu testi basladi..");
 	    	System.out.println();
+	    	logger.log(Level.INFO, "Recursive link click redirected....");
 	        driver.get("https://www.amazon.com/");
 	        WebElement primeLink = driver.findElement(By.xpath("//a[@id='nav-logo-sprites']"));
 	        primeLink.click();
@@ -136,6 +145,7 @@ public class LinkTests {
 	    public void testDealsLink() {
 	       	System.out.println("Deals linki testi basladi..");
 	    	System.out.println();
+	    	logger.log(Level.INFO, "Who got the deal....");
 	        driver.get("https://www.amazon.com/");
 	        By todayDealsLink = By.linkText("Today's Deals");
 	        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(todayDealsLink));
