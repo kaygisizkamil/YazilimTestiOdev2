@@ -58,31 +58,32 @@ public class PageLayoutTests {
 	     
 
     @Test
-    public void testPageLayoutOnDifferentScreenSizes() throws InterruptedException {
-    	driver.get("https://www.amazon.com");
+    public void testPageLayoutOnDifferentScreenSizes() {
+        System.out.println("Page layout test started.");
 
-    	System.out.print("Page-layout farkli ekran boyutlari ile test basladi.");
-    	System.out.println();
-        // Open Amazon website
-        driver.get("https://www.amazon.com/");
+        driver = new ChromeDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        driver.get("https://www.amazon.com");
 
         Dimension desktopSize = new Dimension(1366, 768);
         driver.manage().window().setSize(desktopSize);
-        Thread.sleep(500);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-logo-sprites")));
 
         verifyPageLayout();
 
         Dimension tabletSize = new Dimension(768, 1024);
         driver.manage().window().setSize(tabletSize);
-        Thread.sleep(500);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-logo-sprites")));
 
         verifyPageLayout();
 
         Dimension mobileSize = new Dimension(360, 640);
         driver.manage().window().setSize(mobileSize);
-        Thread.sleep(500);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-logo-sprites")));
 
         verifyPageLayout();
+        System.out.println("Page layout test completed.");
     }
 
     public void verifyPageLayout() {
@@ -91,50 +92,55 @@ public class PageLayoutTests {
         assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-xshop"))).isDisplayed(), "Navigation menu is not displayed");
     }
 
-    @Test
-    public void testNavigationMenuOnDifferentScreenSizes() throws InterruptedException {
-    	driver.get("https://www.amazon.com");
+     @Test
+    public void testNavigationMenuOnDifferentScreenSizes() {
+        System.out.println("Navigation menu test started.");
 
-    	System.out.print("Nav-menu farkli ekran boyutlari ile test basladi.");
-        // Open Amazon website
-        driver.get("https://www.amazon.com/");
+        driver = new ChromeDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        driver.get("https://www.amazon.com");
 
         Dimension[] screenSizes = {
-            new Dimension(1366, 768), // Desktop size
-            new Dimension(768, 1024), // Tablet size
-            new Dimension(360, 640) // Mobile size
+                new Dimension(1366, 768), // Desktop size
+                new Dimension(768, 1024), // Tablet size
+                new Dimension(360, 640) // Mobile size
         };
 
         for (Dimension screenSize : screenSizes) {
             driver.manage().window().setSize(screenSize);
-            Thread.sleep(500);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-logo-sprites")));
 
             expandNavigationMenu();
             collapseNavigationMenu();
         }
+
+        System.out.println("Navigation menu test completed.");
     }
-    @Test
-    public void testAmazonImageResponsiveness() throws InterruptedException {
-    	driver.get("https://www.amazon.com");
+   @Test
+    public void testAmazonImageResponsiveness() {
+        System.out.println("Image responsiveness test started.");
 
-    	System.out.print("Image responsiveness testi basladi..");
+        driver = new ChromeDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Open Amazon website
-        driver.get("https://www.amazon.com/");
+        driver.get("https://www.amazon.com");
 
         Dimension[] screenSizes = {
-            new Dimension(1366, 768), // Desktop size
-            new Dimension(768, 1024), // Tablet size
-            new Dimension(360, 640) // Mobile size
+                new Dimension(1366, 768), // Desktop size
+                new Dimension(768, 1024), // Tablet size
+                new Dimension(360, 640) // Mobile size
         };
 
         for (Dimension screenSize : screenSizes) {
             driver.manage().window().setSize(screenSize);
-            Thread.sleep(1000);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("img")));
 
             WebElement image = driver.findElement(By.tagName("img"));
             verifyImageResponsiveness(image);
         }
+
+        System.out.println("Image responsiveness test completed.");
     }
 
     public void verifyImageResponsiveness(WebElement image) {
