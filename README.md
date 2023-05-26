@@ -9,7 +9,7 @@
 
 ### Projeyi Calistirmak Icin
 1. Projeyi clonlayarak veya indirerek proje klasorune `cd` ile yonlendirin.
-2. `docker build -t enterthenameyouwant`
+2. `docker build -t enterthenameyouwant .`
 3. `docker run -it enterthenameyouwant`
 
 ### Ekran Görüntüleri
