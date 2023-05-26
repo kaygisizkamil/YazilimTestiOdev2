@@ -139,17 +139,17 @@ public class PopUpTests {
         List<WebElement> suggestionLinks = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='s-suggestion-container']")));
         System.out.println(suggestionLinks.size());
 	     // Check that there is at least one suggestion link present
-	     assertTrue(suggestionLinks.size() > 0);
-	     wait.until(ExpectedConditions.elementToBeClickable(suggestionLinks.get(0))).click();
+	 assertTrue(suggestionLinks.size() > 0);
+	 wait.until(ExpectedConditions.elementToBeClickable(suggestionLinks.get(0))).click();
 	
-		  // Wait for the search suggestion pop-up to disappear
-		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("search-suggestions")));
+	// Wait for the search suggestion pop-up to disappear
+	 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("search-suggestions")));
 	
-		  // Wait for the search results to be visible
-		  WebElement searchResults = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='sg-col-inner']")));
+	 // Wait for the search results to be visible
+	 WebElement searchResults = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='sg-col-inner']")));
 	
-		  // Assert that the search results are displayed
-		  assertTrue(searchResults.isDisplayed());
+	  // Assert that the search results are displayed
+	  assertTrue(searchResults.isDisplayed());
     }
     /*
      * it is for testing feedback about products after hovering mouse to popup 
@@ -160,7 +160,7 @@ public class PopUpTests {
      */
    
     @Test
-    public void feedbackPopUpTest() throws InterruptedException {
+    public void feedbackPopUpTest()  {
     	driver.get("https://www.amazon.com");
     	System.out.println("Feedback pop-up testi basladi..");
     	System.out.println();
@@ -170,7 +170,6 @@ public class PopUpTests {
         // Click on the "Write a customer review" button       
         WebElement reviewsPopUp = driver.findElement(By.cssSelector("#acrCustomerReviewLink"));
         reviewsPopUp.click();
-        Thread.sleep(1000);
         WebElement feedbackResult = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Bought at 570')]")));
         assertTrue(feedbackResult.isDisplayed());
         assertEquals(feedbackResult.getText(),"Bought at 570");
@@ -186,8 +185,7 @@ public class PopUpTests {
     	System.out.println();
         driver.get("https://www.amazon.com/");
         try {
-            Thread.sleep(5000); // Wait for 5 seconds for the pop-up to appear
-            WebElement popUpCloseBtn = driver.findElement(By.cssSelector(".a-button-inner"));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".a-button-inner")));
             if (popUpCloseBtn.isDisplayed()) {
                 popUpCloseBtn.click();
                 System.out.println("Pop-up closed successfully.");
