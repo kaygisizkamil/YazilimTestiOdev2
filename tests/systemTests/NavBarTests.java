@@ -61,11 +61,10 @@ public class NavBarTests {
 	 * it is just a basic test that dont have suboptions.
 	 */
 	    @Test
-	    public void testSlideOutNavigation() throws InterruptedException {
+	    public void testSlideOutNavigation()  {
 	    	driver.get("https://www.amazon.com");
 	    	System.out.print("Sliding navbar icindeki testler basladi");
 	    	System.out.println();
-	    	Thread.sleep(500);
 	        // Find the 'All' button and hover over it to reveal the slide out navigation
 	        WebElement allButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#nav-hamburger-menu")));
 	        Actions actions = new Actions(driver);
@@ -89,13 +88,12 @@ public class NavBarTests {
 	     * that is why i used js executor
 	     */
 	    @Test
-	    public void testNestedNavigation() throws InterruptedException {
+	    public void testNestedNavigation()   {
 	    	driver.get("https://www.amazon.com");
 	    	System.out.println("Navbar yonlendirme testi basladi..");
 	    	System.out.println();
-	    	Thread.sleep(500);
 	      WebElement navBar = driver.findElement(By.id("nav-main"));
-	      WebElement element = driver.findElement(By.xpath("//a[contains(text(),'Gift Cards')]"));
+	      WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Gift Cards')]")));
 	      JavascriptExecutor executor = (JavascriptExecutor) driver;
 	      executor.executeScript("arguments[0].click();", element);
 	      wait.until(ExpectedConditions.titleContains("Gift Cards"));

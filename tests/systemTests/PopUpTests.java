@@ -184,18 +184,16 @@ public class PopUpTests {
     	System.out.print("Adress pop-up kapatma testi basladi");
     	System.out.println();
         driver.get("https://www.amazon.com/");
-        try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".a-button-inner")));
-            if (popUpCloseBtn.isDisplayed()) {
-                popUpCloseBtn.click();
-                System.out.println("Pop-up closed successfully.");
-            }
-            else {
-                System.out.println("No popup appears.");
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        WebElement popUpCloseBtn= wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".a-button-inner")));
+        if (popUpCloseBtn.isDisplayed()) {
+            popUpCloseBtn.click();
+            System.out.println("Pop-up closed successfully.");
         }
+        else {
+            System.out.println("No popup appears.");
+        }
+
+
         //suspicious
         assertTrue(driver.findElements(By.cssSelector(".a-button-inner")).isEmpty(), "Pop-up not closed successfully.");
     }
