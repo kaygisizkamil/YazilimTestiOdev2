@@ -58,17 +58,16 @@ public class CheckBoxTests {
     }
 
 	@Test
-    public void testCheckbox() throws InterruptedException {
-		    driver.get("https://www.amazon.com");
-		    JavascriptExecutor executor = (JavascriptExecutor) driver;
-		    pageHeight = driver.manage().window().getSize().getHeight();
-	        // Click on Gift Cards link in the navbar
-	        WebElement navBar = driver.findElement(By.id("nav-main"));
-		    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Gift Cards')]")));
-		    executor.executeScript("arguments[0].click();", element);
-		    wait.until(ExpectedConditions.titleContains("Gift Cards"));
-		    Thread.sleep(500);
-		System.out.println("Checkbox click testi basladi");
+    public void testCheckbox() {
+	 driver.get("https://www.amazon.com");
+	 JavascriptExecutor executor = (JavascriptExecutor) driver;
+	 pageHeight = driver.manage().window().getSize().getHeight();
+	  // Click on Gift Cards link in the navbar
+	 WebElement navBar = driver.findElement(By.id("nav-main"));
+	 WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Gift Cards')]")));
+	 executor.executeScript("arguments[0].click();", element);
+         wait.until(ExpectedConditions.titleContains("Gift Cards"));
+	 System.out.println("Checkbox click testi basladi");
     	System.out.println();
     	logger.log(Level.INFO, "Click to checkbox");
 
@@ -87,12 +86,10 @@ public class CheckBoxTests {
         eGiftCardCheckbox.click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//body/div[@id='a-page']/div[@id='search']/span[1]")));
         driver.get("https://www.amazon.com/s?i=gift-cards&bbn=2238192011&rh=n%3A2238192011%2Cp_n_format_browse-bin%3A2740964011&dc&ds=v1%3AzD7MwieAJFvsVUZxGKGcffaMRUoIJZja17r2%2FDIdidA&qid=1683763332&ref=sr_ex_n_1");        
-        WebElement checkboxOnNewPage = driver.findElement(By.xpath("//body[1]/div[1]/div[2]/div[1]/div[2]/div[1]/div[3]/span[1]/div[1]/div[1]/div[1]/div[5]/ul[1]/span[1]/li[1]/span[1]/a[1]/div[1]/label[1]/i[1]"));
+       WebElement checkboxOnNewPage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//body[1]/div[1]/div[2]/div[1]/div[2]/div[1]/div[3]/span[1]/div[1]/div[1]/div[1]/div[5]/ul[1]/span[1]/li[1]/span[1]/a[1]/div[1]/label[1]/i[1]")));
        // assertTrue(checkboxOnNewPage.isSelected());
         // Go back to All Gift Cards page
-        Thread.sleep(1000);
         driver.navigate().to(urlToBeReturned);
-        Thread.sleep(1000);
         // Click on Mail checkbox
         By mailCardCheckboxLocator = By.xpath("//body/div[@id='a-page']/div[2]/div[2]/div[2]/div[1]/div[1]/div[1]/ul[1]/li[2]/span[1]/a[1]/div[1]/label[1]/i[1]");
         wait.until(ExpectedConditions.visibilityOfElementLocated(mailCardCheckboxLocator));
@@ -101,15 +98,11 @@ public class CheckBoxTests {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//body/div[@id='a-page']/div[@id='search']/span[1]")));
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0, " + pageHeight/4 + ")");
-        Thread.sleep(500);
         driver.get("https://www.amazon.com/s?bbn=2238192011&rh=n%3A2238192011%2Cp_n_format_browse-bin%3A2740967011&dc&qid=1683765089&rnid=2740963011&ref=lp_2864120011_nr_p_n_format_browse-bin_1");        
-        WebElement checkboxOnNewPage2 = driver.findElement(By.xpath("//body[1]/div[1]/div[2]/div[1]/div[2]/div[1]/div[3]/span[1]/div[1]/div[1]/div[1]/div[5]/ul[1]/span[2]/li[1]/span[1]/a[1]/div[1]/label[1]/i[1]"));
+        WebElement checkboxOnNewPage2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//body[1]/div[1]/div[2]/div[1]/div[2]/div[1]/div[3]/span[1]/div[1]/div[1]/div[1]/div[5]/ul[1]/span[2]/li[1]/span[1]/a[1]/div[1]/label[1]/i[1]")));
        // assertTrue(checkboxOnNewPage.isSelected());
         // Go back to All Gift Cards page
-        Thread.sleep(1000);
         driver.navigate().to("https://www.amazon.com");
-        Thread.sleep(1000);//to be able to see if we really are navigated back
-
         System.out.println("Test done successfully");
 
     }
@@ -119,16 +112,15 @@ public class CheckBoxTests {
 	 * 
 	 */
     @Test
-    public void testNestedCheckbox() throws InterruptedException {
-    	   driver.get("https://www.amazon.com");
-	   	    JavascriptExecutor executor = (JavascriptExecutor) driver;
-	   	    pageHeight = driver.manage().window().getSize().getHeight();
+    public void testNestedCheckbox(){
+    	driver.get("https://www.amazon.com");
+	JavascriptExecutor executor = (JavascriptExecutor) driver;
+	pageHeight = driver.manage().window().getSize().getHeight();
 	           // Click on Gift Cards link in the navbar
-           WebElement navBar = driver.findElement(By.id("nav-main"));
-   	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Gift Cards')]")));
-   	    executor.executeScript("arguments[0].click();", element);
-   	    wait.until(ExpectedConditions.titleContains("Gift Cards"));
-   	    //Thread.sleep(500);    	 
+         WebElement navBar = driver.findElement(By.id("nav-main"));
+   	 WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Gift Cards')]")));
+   	 executor.executeScript("arguments[0].click();", element);
+   	 wait.until(ExpectedConditions.titleContains("Gift Cards"));
     	System.out.println("Nested Checkbox testi basladi");
     	//logger.log(Level.INFO, "Click to checkbox twice (nested)");
 
@@ -141,7 +133,6 @@ public class CheckBoxTests {
         
         WebElement amazonCheckBox=wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//body[1]/div[1]/div[2]/div[1]/div[2]/div[1]/div[3]/span[1]/div[1]/div[1]/div[1]/div[3]/ul[1]/span[1]/li[1]/span[1]/a[1]/div[1]/label[1]/i[1]")));
         amazonCheckBox.click();
-        Thread.sleep(1000);
         WebElement howMany2=wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//body/div[@id='a-page']/div[@id='search']/span[1]/div[1]/h1[1]/div[1]/div[1]/div[1]")));
         String resultText2 = howMany2.getText();
         int resultCount2 = Integer.parseInt(resultText2.split(" ")[2].replace(",", ""));
