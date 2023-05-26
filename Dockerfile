@@ -1,5 +1,7 @@
+# set base image to lightweight jdk
 FROM adoptopenjdk:11-jdk-hotspot
 
+# set working directory
 WORKDIR /app
 COPY src/program /app/src/program
 COPY tests/systemTests /app/tests/systemTests
@@ -16,8 +18,10 @@ RUN apt-get update && apt-get install -y wget unzip gnupg2 \
     && unzip /tmp/chromedriver.zip -d /usr/local/bin/ \
     && chmod +x /usr/local/bin/chromedriver
 
+# Download and add Selenium to the libs folder
+RUN wget -O /app/libs/selenium-server.jar https://github.com/SeleniumHQ/selenium/releases/download/selenium-4.9.0/selenium-server-4.9.1.jar
+
 # Copy and compile the Java source files
-COPY libs/selenium-server-4.9.1.jar /app/libs/selenium-server-4-9-1.jar
 COPY libs/junit-platform-console-standalone-1.9.2.jar /app/libs/junit-platform-console-standalone.jar
 
 RUN javac -d /app -cp ".:/app/libs/*" /app/src/program/*.java /app/tests/systemTests/*.java
@@ -25,6 +29,7 @@ RUN javac -d /app -cp ".:/app/libs/*" /app/src/program/*.java /app/tests/systemT
 # Expose port 99 for the application
 EXPOSE 99
 
-CMD java -jar /app/libs/selenium-server-4.9.1.jar & \
+CMD java -jar /app/libs/selenium-server.jar & \
     sleep 5 && \
     java -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver -cp ".:/app/libs/*:/app" program.TestMenu
+
