@@ -47,7 +47,7 @@ public class TestMenu {
     	System.out.println("Projeye engel teskil etmez testler IPv4 kullanmaktadır(safe to ignore dont affect tests)");
     	System.out.println("*****8 farklı kategori 30 farklı test amazon.com sitesi sistem testleri..****");
 
-    	//System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+    	System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
 
         boolean running = true;
         Scanner scanner = new Scanner(System.in);
