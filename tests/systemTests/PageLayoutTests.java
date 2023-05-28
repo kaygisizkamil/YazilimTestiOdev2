@@ -15,10 +15,10 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.Dimension;
-
+import java.lang.reflect.Method;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -26,21 +26,25 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import java.util.logging.ConsoleHandler;
+
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
-@TestInstance(Lifecycle.PER_CLASS)
+import java.util.logging.Level;
 
 public class PageLayoutTests {
     private  WebDriver driver;
     private WebDriverWait wait;
     private  final Logger logger = Logger.getLogger(PageLayoutTests.class.getName());
 
-    @BeforeAll
+    @BeforeEach
     public  void setUp() {
+            ConsoleHandler consoleHandler = new ConsoleHandler();
+            consoleHandler.setLevel(Level.ALL);
     	  ChromeOptions options = new ChromeOptions();
 	        options.addArguments("--no-sandbox"); // Required for running in Docker
 	        options.addArguments("--headless=new");
@@ -49,9 +53,12 @@ public class PageLayoutTests {
 	        options.setAcceptInsecureCerts(true);
 	      //  options.addArguments("--shm-size=2g");
 	        driver = new ChromeDriver(options);
-	       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
+            Logger.getLogger("org.openqa.selenium").setLevel(Level.SEVERE);
+            System.setProperty("webdriver.chrome.silentOutput", "true");//it still prints errors not completely silent
+             logger.addHandler(consoleHandler);
+            wait=new WebDriverWait(driver,Duration.ofSeconds(10));
     }
-    @AfterAll
+    @AfterEach
     public  void tearDown() {
         driver.quit();
     }
@@ -59,11 +66,7 @@ public class PageLayoutTests {
 
     @Test
     public void testPageLayoutOnDifferentScreenSizes() {
-        System.out.println("Page layout test started.");
-
-        driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
+        System.out.println("\nPage layout test started.\n");
         driver.get("https://www.amazon.com");
 
         Dimension desktopSize = new Dimension(1366, 768);
@@ -83,8 +86,9 @@ public class PageLayoutTests {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-logo-sprites")));
 
         verifyPageLayout();
-        System.out.println("Page layout test completed.");
-    }
+        Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+        String testName = currentTestMethod.getName();
+        logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");    }
 
     public void verifyPageLayout() {
         assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-logo-sprites"))).isDisplayed(), "Logo is not displayed");
@@ -95,9 +99,6 @@ public class PageLayoutTests {
      @Test
     public void testNavigationMenuOnDifferentScreenSizes() {
         System.out.println("Navigation menu test started.");
-
-        driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.get("https://www.amazon.com");
 
@@ -115,14 +116,13 @@ public class PageLayoutTests {
             collapseNavigationMenu();
         }
 
-        System.out.println("Navigation menu test completed.");
+         Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+         String testName = currentTestMethod.getName();
+         logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
     }
    @Test
     public void testAmazonImageResponsiveness() {
         System.out.println("Image responsiveness test started.");
-
-        driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.get("https://www.amazon.com");
 
@@ -140,11 +140,12 @@ public class PageLayoutTests {
             verifyImageResponsiveness(image);
         }
 
-        System.out.println("Image responsiveness test completed.");
+       Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+       String testName = currentTestMethod.getName();
+       logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
     }
 
     public void verifyImageResponsiveness(WebElement image) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         try {
             assertTrue(image.isDisplayed(), "Image is not displayed");

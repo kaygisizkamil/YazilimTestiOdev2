@@ -10,10 +10,10 @@
 
 package systemTests;
 
-
-import org.junit.jupiter.api.AfterAll;
+import java.lang.reflect.Method;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
@@ -25,6 +25,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.logging.ConsoleHandler;
+
 //some of this test inside test class will be failed intentionally
 //to test my internet connection ,because there are no wait statements 
 //it will be added
@@ -34,9 +37,11 @@ public class Signuptests {
     private static final Logger logger = Logger.getLogger(Signuptests.class.getName());
 
 
-    @BeforeAll
+    @BeforeEach
     public  void setUp() {
-    	  ChromeOptions options = new ChromeOptions();
+            ConsoleHandler consoleHandler = new ConsoleHandler();
+            consoleHandler.setLevel(Level.ALL);
+    	    ChromeOptions options = new ChromeOptions();
 	        options.addArguments("--no-sandbox"); // Required for running in Docker
 	        options.addArguments("--headless=new");
 	        options.addArguments("--allow-insecure-localhost");
@@ -44,23 +49,25 @@ public class Signuptests {
 	        options.setAcceptInsecureCerts(true);
 	      //  options.addArguments("--shm-size=2g");
 	        driver = new ChromeDriver(options);
-	       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
+            Logger.getLogger("org.openqa.selenium").setLevel(Level.SEVERE);
+            System.setProperty("webdriver.chrome.silentOutput", "true");//it still prints errors not completely silent
+            logger.addHandler(consoleHandler);
+
+             wait=new WebDriverWait(driver,Duration.ofSeconds(10));
     }
-    @AfterAll
+    @AfterEach
     public  void tearDown() {
         driver.quit();
     }
     
  @Test
     public void testSuccessfulSignUp() {
-        System.out.println("Sign-up test started..");
+        System.out.println("\nSign-up test started..\n");
         navigateToSignUpPage();
 
         String email = "example@example.com";
         fillRegistrationForm("Kygsz kygsz", email, "yourpassword", "yourpassword");
         submitForm();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlToBe("https://www.amazon.com/ap/register"));
 
         String expectedUrl = "https://www.amazon.com/ap/register";
@@ -68,12 +75,14 @@ public class Signuptests {
         Assertions.assertEquals(expectedUrl, actualUrl, "Signup failed. Expected URL: " + expectedUrl + ", Actual URL: " + actualUrl);
 
         System.out.println("Sign-up test completed.");
-        driver.quit();
+         Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+         String testName = currentTestMethod.getName();
+         logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
     }
 
     @Test
     public void testWeakPassword() {
-        System.out.println("Weak password test started..");
+        System.out.println("\nWeak password test started..\n");
         navigateToSignUpPage();
 
         String email = "example2@example.com";
@@ -87,13 +96,13 @@ public class Signuptests {
         String actualErrorMessage = passwordError.getText().trim();
         Assertions.assertEquals(expectedErrorMessage, actualErrorMessage, "Invalid error message. Expected: " + expectedErrorMessage + ", Actual: " + actualErrorMessage);
 
-        System.out.println("Weak password test completed.");
-        driver.quit();
-    }
+        Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+        String testName = currentTestMethod.getName();
+        logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");    }
 
     @Test
     public void testInvalidEmail() {
-        System.out.println("Invalid email test started..");
+        System.out.println("\nInvalid email test started..\n");
         navigateToSignUpPage();
 
         fillRegistrationForm("Kygsz kygsz", "invalidemail", "yourpassword", "yourpassword");
@@ -106,13 +115,13 @@ public class Signuptests {
         String actualErrorMessage = emailError.getText().trim();
         Assertions.assertEquals(expectedErrorMessage, actualErrorMessage, "Invalid error message. Expected: " + expectedErrorMessage + ", Actual: " + actualErrorMessage);
 
-        System.out.println("Invalid email test completed.");
-        driver.quit();
-    }
+        Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+        String testName = currentTestMethod.getName();
+        logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");    }
 
     @Test
     public void testExistingEmail() {
-        System.out.println("Existing email test started..");
+        System.out.println("\nExisting email test started..\n");
         navigateToSignUpPage();
 
         fillRegistrationForm("Kygsz kygsz", "existingemail@example.com", "yourpassword", "yourpassword");
@@ -133,9 +142,9 @@ public class Signuptests {
             Assertions.assertTrue(currentUrl.contains("https://www.amazon.com/ap/cvf/request?arb="), "Redirected to unexpected URL: " + currentUrl);
         }
 
-        System.out.println("Existing email test completed.");
-        driver.quit();
-    }
+        Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+        String testName = currentTestMethod.getName();
+        logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");    }
 
     public void navigateToSignUpPage() {
         driver = new ChromeDriver();
