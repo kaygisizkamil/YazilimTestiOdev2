@@ -85,7 +85,9 @@ public class TestMenu {
         testClasses.put(8, CartTests.class);
         Class<?> selectedTestClass = testClasses.get(testNumber);
         if (selectedTestClass != null) {
+         //   invokeBeforeAll(selectedTestClass);
             executeTest(selectedTestClass);
+            //invokeAfterAll(selectedTestClass);
         } else {
             System.out.println("Gecersiz secenek .");
         }
@@ -108,7 +110,7 @@ public class TestMenu {
         TestExecutionSummary summary = listener.getSummary();
         listener = new SummaryGeneratingListener(); 
 
-        System.out.println("Total tests: " + summary.getTestsFoundCount()+" tamamlandi");
+        System.out.println("Total tests: " + summary.getTestsFoundCount()+"tamamlandi");
       
     }
     

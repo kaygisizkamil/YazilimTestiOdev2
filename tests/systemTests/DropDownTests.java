@@ -16,14 +16,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
-import java.lang.reflect.Method;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+
 import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.ConsoleHandler;
-
+@TestInstance(Lifecycle.PER_CLASS)
 public class DropDownTests {
 
     private  WebDriver driver;
@@ -33,8 +30,6 @@ public class DropDownTests {
 
     @BeforeEach
     public void setUp() {
-        ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setLevel(Level.ALL);
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--headless=new");
@@ -44,10 +39,6 @@ public class DropDownTests {
         options.setAcceptInsecureCerts(true);
 
         driver = new ChromeDriver(options);
-        Logger.getLogger("org.openqa.selenium").setLevel(Level.SEVERE);
-        System.setProperty("webdriver.chrome.silentOutput", "true");//it still prints errors not completely silent
-        logger.addHandler(consoleHandler);
-
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
@@ -60,8 +51,10 @@ public class DropDownTests {
 
     @Test
     public void testDropdownDefaultOption() {
-    	System.out.print("\nDrowpdown default opsiyon testi basladi..\n");
+    	System.out.print("Drowpdown default opsiyon testi basladi..");
+    	System.out.println();
         driver.get("https://www.amazon.com/");
+    	logger.log(Level.INFO, "Open the amazon find the dropdown..");
         WebElement dropdownTrigger = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='nav-search-dropdown-card']")));
         Actions actions = new Actions(driver);
         actions.moveToElement(dropdownTrigger).click().build().perform();
@@ -72,14 +65,14 @@ public class DropDownTests {
         dropdownOption.click();
 
         Assertions.assertEquals(optionText, "All Departments", "Dropdown default option test failed.");
-        Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
-        String testName = currentTestMethod.getName();
-        logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
+        System.out.println("Dropdown default option test passed.");
     }
 
     @Test
     public void testDropdownOptionsCount() {
-    	System.out.print("\nDrowpdown  opsiyon sayisi dogru mu testi basladi\n");
+    	System.out.print("Drowpdown  opsiyon sayisi dogru mu testi basladi");
+    	System.out.println();
+    	logger.log(Level.INFO, "To Control are the number matches");
         driver.get("https://www.amazon.com/");
 
         WebElement dropdownTrigger = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='nav-search-dropdown-card']")));
@@ -89,14 +82,13 @@ public class DropDownTests {
 
         Assertions.assertTrue(optionsCount >= 0, "Dropdown options count test failed.");
         System.out.println("Dropdown options count test passed.");
-        Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
-        String testName = currentTestMethod.getName();
-        logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
     }
 
     @Test
     public void isDropdownReallyWorks() {
-    	System.out.print("\nDrowpdown opsiyon secim testi basladi\n");
+    	System.out.print("Drowpdown opsiyon secim testi basladi");
+    	System.out.println();
+    	logger.log(Level.INFO, "Secim testi..");
 
         driver.get("https://www.amazon.com/");
         
@@ -112,8 +104,6 @@ public class DropDownTests {
         searchBox.submit();
         String currentURL = driver.getCurrentUrl();
         Assertions.assertNotEquals(urlBefore, currentURL, "Dropdown search test failed.");
-        Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
-        String testName = currentTestMethod.getName();
-        logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
+        System.out.println("Dropdown search test passed.");
     }
 }

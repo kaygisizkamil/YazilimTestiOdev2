@@ -11,8 +11,8 @@ package systemTests;
 
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -24,15 +24,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.lang.reflect.Method;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.ConsoleHandler;
-
+@TestInstance(Lifecycle.PER_CLASS)
 public class LinkTests {
 
 		
@@ -41,11 +40,9 @@ public class LinkTests {
 	    private static final Logger logger = Logger.getLogger(LinkTests.class.getName());
 	
 	
-	    @BeforeEach
+	    @BeforeAll
 	    public  void setUp() {
-				ConsoleHandler consoleHandler = new ConsoleHandler();
-				consoleHandler.setLevel(Level.ALL);
-	    	    ChromeOptions options = new ChromeOptions();
+	    	  ChromeOptions options = new ChromeOptions();
 		        options.addArguments("--no-sandbox"); // Required for running in Docker
 		        options.addArguments("--headless=new");
 		        options.addArguments("--allow-insecure-localhost");
@@ -53,18 +50,17 @@ public class LinkTests {
 		        options.setAcceptInsecureCerts(true);
 		      //  options.addArguments("--shm-size=2g");
 		        driver = new ChromeDriver(options);
-				Logger.getLogger("org.openqa.selenium").setLevel(Level.SEVERE);
-				System.setProperty("webdriver.chrome.silentOutput", "true");//it still prints errors not completely silent
-				logger.addHandler(consoleHandler);
-				wait=new WebDriverWait(driver,Duration.ofSeconds(10));
+		       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
 	    }
-	    @AfterEach
+	    @AfterAll
 	    public  void tearDown() {
 	        driver.quit();
 	    }
 	    @Test
 	    public void testSignInLink() {
-	    	System.out.println("\nSign in butonuna tiklandiginda yonlendirme dogru link mi testi basladi..\n");
+	    	System.out.println("Sign in butonuna tiklandiginda yonlendirme dogru link mi testi basladi..");
+	    	System.out.println();
+	    	logger.log(Level.INFO, "Signin click redirected....");
 
 	        driver.get("https://www.amazon.com/");
 	        WebElement signInLink = driver.findElement(By.cssSelector("#nav-link-accountList-nav-line-1"));
@@ -73,15 +69,14 @@ public class LinkTests {
 	        wait.until(ExpectedConditions.urlToBe(expectedUrl));
 	        String actualUrl = driver.getCurrentUrl();
 	        assertEquals(expectedUrl, actualUrl);
-			Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
-			String testName = currentTestMethod.getName();
-			logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
 	   
 	    }
 
 	    @Test
 	    public void testCartLink() {
-	       	System.out.println("\nSepet butonuna tiklandiginda yonlendirme dogru link mi testi basladi..\n");
+	       	System.out.println("Sepet butonuna tiklandiginda yonlendirme dogru link mi testi basladi..");
+	    	System.out.println();
+	    	logger.log(Level.INFO, "Cart click redirected....");
 
 	        driver.get("https://www.amazon.com/");
 	        WebElement cartLink = driver.findElement(By.id("nav-cart"));
@@ -90,14 +85,13 @@ public class LinkTests {
 	        wait.until(ExpectedConditions.urlToBe(expectedUrl));
 	        String actualUrl = driver.getCurrentUrl();
 	        assertEquals(expectedUrl, actualUrl);
-			Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
-			String testName = currentTestMethod.getName();
-			logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
 	    }
 
 	    @Test
 	    public void testHelpLink() {
-	       	System.out.println("\nHelp  butonuna tiklandiginda yonlendirme dogru link mi testi basladi..\n");
+	       	System.out.println("Help  butonuna tiklandiginda yonlendirme dogru link mi testi basladi..");
+	    	System.out.println();
+	    	logger.log(Level.INFO, "Help click redirected....");
 	        driver.get("https://www.amazon.com/");
 	        WebElement helpLink = driver.findElement(By.linkText("Help"));
 	        helpLink.click();
@@ -105,14 +99,13 @@ public class LinkTests {
 	        wait.until(ExpectedConditions.urlToBe(expectedUrl));
 	        String actualUrl = driver.getCurrentUrl();
 	        assertEquals(expectedUrl, actualUrl);
-			Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
-			String testName = currentTestMethod.getName();
-			logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
 	    }
 
 	    @Test
 	    public void testSearchLink() {
-	       	System.out.println("\nArama butonu tiklandiginda yonlendirme dogru link mi testi basladi..\n");
+	       	System.out.println("Arama butonu tiklandiginda yonlendirme dogru link mi testi basladi..");
+	    	System.out.println();
+	    	logger.log(Level.INFO, "Search click redirected....");
 	        driver.get("https://www.amazon.com/");
 	        WebElement searchButton = driver.findElement(By.cssSelector(".nav-search-submit .nav-input"));
 	        searchButton.click();
@@ -120,14 +113,13 @@ public class LinkTests {
 	        wait.until(ExpectedConditions.urlContains(expectedUrl));
 	        String actualUrl = driver.getCurrentUrl();
 	        assertTrue(actualUrl.startsWith(expectedUrl));
-			Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
-			String testName = currentTestMethod.getName();
-			logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
 	    }
 
 	    @Test
 	    public void testOrdersLink() {
-	       	System.out.println("\nSiparislerim  butonu tiklandiginda yonlendirme dogru link mi testi basladi..\n");
+	       	System.out.println("Siparislerim  butonu tiklandiginda yonlendirme dogru link mi testi basladi..");
+	    	System.out.println();
+	    	logger.log(Level.INFO, "Order click redirected....");
 	        driver.get("https://www.amazon.com/");
 	        WebElement ordersLink = driver.findElement(By.id("nav-orders"));
 	        ordersLink.click();
@@ -135,14 +127,13 @@ public class LinkTests {
 	        wait.until(ExpectedConditions.urlToBe(expectedUrl));
 	        String actualUrl = driver.getCurrentUrl();
 	        assertEquals(expectedUrl, actualUrl);
-			Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
-			String testName = currentTestMethod.getName();
-			logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
 	    }
 
 	    @Test
 	    public void testNavRecursiveLink() {
-	       	System.out.println("\nAyni sayfada kalmayı garanti etmesi gereken link calisiyor mu testi basladi..\n");
+	       	System.out.println("Ayni sayfada kalmayı garanti etmesi gereken link calisiyor mu testi basladi..");
+	    	System.out.println();
+	    	logger.log(Level.INFO, "Recursive link click redirected....");
 	        driver.get("https://www.amazon.com/");
 	        WebElement primeLink = driver.findElement(By.xpath("//a[@id='nav-logo-sprites']"));
 	        primeLink.click();
@@ -150,14 +141,13 @@ public class LinkTests {
 	        wait.until(ExpectedConditions.urlToBe(expectedUrl));
 	        String actualUrl = driver.getCurrentUrl();
 	        assertEquals(expectedUrl, actualUrl);
-			Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
-			String testName = currentTestMethod.getName();
-			logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
 	    }
 
 	    @Test
 	    public void testDealsLink() {
-	       	System.out.println("\nDeals linki testi basladi..\n");
+	       	System.out.println("Deals linki testi basladi..");
+	    	System.out.println();
+	    	logger.log(Level.INFO, "Who got the deal....");
 	        driver.get("https://www.amazon.com/");
 	        By todayDealsLink = By.linkText("Today's Deals");
 	        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(todayDealsLink));
@@ -166,8 +156,5 @@ public class LinkTests {
 	        String expectedUrl = "https://www.amazon.com/gp/goldbox";
 	        wait.until(ExpectedConditions.urlContains(expectedUrl));
 	        assertTrue(driver.getCurrentUrl().startsWith(expectedUrl));
-			Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
-			String testName = currentTestMethod.getName();
-			logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
 	    }
 	}
