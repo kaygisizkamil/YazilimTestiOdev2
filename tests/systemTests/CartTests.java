@@ -10,13 +10,16 @@ package systemTests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import java.lang.reflect.Method;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.logging.ConsoleHandler;
+
 import org.junit.jupiter.api.TestInstance;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -30,16 +33,17 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 
-@TestInstance(Lifecycle.PER_CLASS)
 public class CartTests {
     private  WebDriver driver;
     private  WebDriverWait wait;
     private static final Logger logger = Logger.getLogger(CartTests.class.getName());
 
-
-    @BeforeAll
+//to be able to show info and errors i need to set logger level to severe so both will be showed
+    @BeforeEach
     public  void setUp() {
-    	  ChromeOptions options = new ChromeOptions();
+            ConsoleHandler consoleHandler = new ConsoleHandler();
+            consoleHandler.setLevel(Level.ALL);
+    	    ChromeOptions options = new ChromeOptions();
 	        options.addArguments("--no-sandbox"); // Required for running in Docker
 	        options.addArguments("--headless=new");
 	        options.addArguments("--allow-insecure-localhost");
@@ -47,9 +51,12 @@ public class CartTests {
 	        options.setAcceptInsecureCerts(true);
 	      //  options.addArguments("--shm-size=2g");
 	        driver = new ChromeDriver(options);
-	       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
+            Logger.getLogger("org.openqa.selenium").setLevel(Level.SEVERE);
+            System.setProperty("webdriver.chrome.silentOutput", "true");
+            logger.addHandler(consoleHandler);
+            wait=new WebDriverWait(driver,Duration.ofSeconds(10));
     }
-    @AfterAll
+    @AfterEach
     public  void tearDown() {
         driver.quit();
     }
@@ -57,22 +64,21 @@ public class CartTests {
   
     @Test
     public void testAddToCart() {
-    	System.out.print("Sepete ekleme ozelligi testi basladi..");
-    	System.out.println();
-    	logger.log(Level.INFO, "Add 1 to cart");
+    	System.out.print("\nSepete ekleme ozelligi testi basladi..\n");
         driver.get("https://www.amazon.com/Placemat-Protect-Resistant-Wipeable-Accessories/dp/B0BGMJXTBX/ref=sr_1_1?crid=IBML6MYDLJ4A&keywords=Dinnerware%2B%26%2Baccessories&pd_rd_r=17d7a2a0-faba-423f-ac87-ebcb4d293285&pd_rd_w=l6K9T&pd_rd_wg=USyFS&pf_rd_p=c9097eb6-837b-4ba7-94d7-51428f6e8d2a&pf_rd_r=WK6ZJCDRGWY1BWGC84TA&qid=1684440349&sprefix=dinnerware%2B%26%2Baccessorie%2Caps%2C190&sr=8-1&th=1");
         WebElement addToCartButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("add-to-cart-button")));
         addToCartButton.click();
         WebElement cartCountElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-cart-count")));
         int cartCount = Integer.parseInt(cartCountElement.getText());
         assertEquals(1, cartCount);
+        Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+        String testName = currentTestMethod.getName();
+        logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
     }
 
     @Test
     public void testRemoveFromCart() {
-    	System.out.println("Sepetten urun silme testi basladi..");
-    	System.out.println();
-    	logger.log(Level.INFO, "Remove from cart");
+    	System.out.println("\nSepetten urun silme testi basladi..\n");
         driver.get("https://www.amazon.com/Placemat-Protect-Resistant-Wipeable-Accessories/dp/B0BGMJXTBX/ref=sr_1_1?crid=IBML6MYDLJ4A&keywords=Dinnerware%2B%26%2Baccessories&pd_rd_r=17d7a2a0-faba-423f-ac87-ebcb4d293285&pd_rd_w=l6K9T&pd_rd_wg=USyFS&pf_rd_p=c9097eb6-837b-4ba7-94d7-51428f6e8d2a&pf_rd_r=WK6ZJCDRGWY1BWGC84TA&qid=1684440349&sprefix=dinnerware%2B%26%2Baccessorie%2Caps%2C190&sr=8-1&th=1");
         WebElement addToCartButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("add-to-cart-button")));
         addToCartButton.click();
@@ -83,13 +89,14 @@ public class CartTests {
         WebElement emptyCartMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='sc-active-cart']//h1")));
         String actualMessage = emptyCartMessage.getText();
         assertEquals("Shopping Cart", actualMessage);
+        Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+        String testName = currentTestMethod.getName();
+        logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
     }
 
     @Test
     public void testAddMultipleProductsToCart() {
-    	System.out.println("Sepete coklu urun ekleme testi basladi..");
-    	System.out.println();
-    	logger.log(Level.INFO, "Add multiple");
+    	System.out.println("\nSepete coklu urun ekleme testi basladi..\n");
 
         driver.get("https://www.amazon.com/Placemat-Protect-Resistant-Wipeable-Accessories/dp/B0BGMJXTBX/ref=sr_1_1?crid=IBML6MYDLJ4A&keywords=Dinnerware%2B%26%2Baccessories&pd_rd_r=17d7a2a0-faba-423f-ac87-ebcb4d293285&pd_rd_w=l6K9T&pd_rd_wg=USyFS&pf_rd_p=c9097eb6-837b-4ba7-94d7-51428f6e8d2a&pf_rd_r=WK6ZJCDRGWY1BWGC84TA&qid=1684440349&sprefix=dinnerware%2B%26%2Baccessorie%2Caps%2C190&sr=8-1&th=1");
         WebElement addToCartButton1 = wait.until(ExpectedConditions.elementToBeClickable(By.id("add-to-cart-button")));
@@ -109,14 +116,14 @@ public class CartTests {
         WebElement product2Title = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//body/div[@id='a-page']/div[2]/div[3]/div[4]/div[1]/div[2]/div[1]/div[1]/form[1]/div[2]/div[4]/div[4]/div[1]/div[2]/ul[1]/li[1]/span[1]/a[1]/span[1]")));
         String actualProduct2Title = product2Title.getText();
         assertTrue(actualProduct2Title.contains("Home Genie Placemat Set of 4 Protect Surface Heat"));
+        Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+        String testName = currentTestMethod.getName();
+        logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
     }
 
     @Test
     public void testUpdateProductQuantityInCart() {
-    	System.out.print("Sepetteki urun miktarini degistirme testi");
-    	System.out.println();
-    	logger.log(Level.INFO, "Update");
-
+    	System.out.print("\nSepetteki urun miktarini degistirme testi\n");
         driver.get("https://www.amazon.com/Placemat-Protect-Resistant-Wipeable-Accessories/dp/B0BGMJXTBX/ref=sr_1_1?crid=IBML6MYDLJ4A&keywords=Dinnerware%2B%26%2Baccessories&pd_rd_r=17d7a2a0-faba-423f-ac87-ebcb4d293285&pd_rd_w=l6K9T&pd_rd_wg=USyFS&pf_rd_p=c9097eb6-837b-4ba7-94d7-51428f6e8d2a&pf_rd_r=WK6ZJCDRGWY1BWGC84TA&qid=1684440349&sprefix=dinnerware%2B%26%2Baccessorie%2Caps%2C190&sr=8-1&th=1");
 
         WebElement quantityInput = wait.until(ExpectedConditions.elementToBeClickable(By.id("quantity")));
@@ -124,13 +131,14 @@ public class CartTests {
         quantityInput.sendKeys("2");
 
         assertTrue(Integer.parseInt(quantityInput.getAttribute("value")) > 1);
+        Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+        String testName = currentTestMethod.getName();
+        logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
     }
     
     @Test
     public void testEmptyCart() {
-    	System.out.print("Sepetten urun silme testi basladi");
-    	System.out.println();
-    	logger.log(Level.INFO, "Empty cart");
+    	System.out.print("\nSepetten urun silme testi basladi\n");
 
         driver.get("https://www.amazon.com/Placemat-Protect-Resistant-Wipeable-Accessories/dp/B0BGMJXTBX/ref=sr_1_1?crid=IBML6MYDLJ4A&keywords=Dinnerware%2B%26%2Baccessories&pd_rd_r=17d7a2a0-faba-423f-ac87-ebcb4d293285&pd_rd_w=l6K9T&pd_rd_wg=USyFS&pf_rd_p=c9097eb6-837b-4ba7-94d7-51428f6e8d2a&pf_rd_r=WK6ZJCDRGWY1BWGC84TA&qid=1684440349&sprefix=dinnerware%2B%26%2Baccessorie%2Caps%2C190&sr=8-1&th=1");
 
@@ -146,6 +154,9 @@ public class CartTests {
         WebElement emptyCartMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='sc-active-cart']//h1")));
         String actualMessage = emptyCartMessage.getText();
         assertEquals("Shopping Cart", actualMessage);
+        Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+        String testName = currentTestMethod.getName();
+        logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
 
     }
 }/*
