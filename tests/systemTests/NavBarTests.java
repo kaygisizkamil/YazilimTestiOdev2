@@ -12,8 +12,8 @@ package systemTests;
 
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -25,13 +25,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import java.lang.reflect.Method;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.logging.ConsoleHandler;
+
 
 import java.time.Duration;
 import java.util.logging.Logger;
-@TestInstance(Lifecycle.PER_CLASS)
+import java.util.logging.Level;
 
 public class NavBarTests {
 
@@ -39,9 +41,11 @@ public class NavBarTests {
     private WebDriverWait wait;
     private static final Logger logger = Logger.getLogger(NavBarTests.class.getName());
 
-    @BeforeAll
+    @BeforeEach
     public  void setUp() {
-    	  ChromeOptions options = new ChromeOptions();
+			ConsoleHandler consoleHandler = new ConsoleHandler();
+			consoleHandler.setLevel(Level.ALL);
+    	    ChromeOptions options = new ChromeOptions();
 	        options.addArguments("--no-sandbox"); // Required for running in Docker
 	        options.addArguments("--headless=new");
 	        options.addArguments("--allow-insecure-localhost");
@@ -49,9 +53,12 @@ public class NavBarTests {
 	        options.setAcceptInsecureCerts(true);
 	      //  options.addArguments("--shm-size=2g");
 	        driver = new ChromeDriver(options);
-	       wait=new WebDriverWait(driver,Duration.ofSeconds(10));
+			Logger.getLogger("org.openqa.selenium").setLevel(Level.SEVERE);
+			System.setProperty("webdriver.chrome.silentOutput", "true");//it still prints errors not completely silent
+			logger.addHandler(consoleHandler);
+			wait=new WebDriverWait(driver,Duration.ofSeconds(10));
     }
-    @AfterAll
+    @AfterEach
     public  void tearDown() {
         driver.quit();
     }
@@ -62,9 +69,9 @@ public class NavBarTests {
 	 */
 	    @Test
 	    public void testSlideOutNavigation()  {
+			System.out.print("\nSliding navbar icindeki testler basladi\n");
 	    	driver.get("https://www.amazon.com");
-	    	System.out.print("Sliding navbar icindeki testler basladi");
-	    	System.out.println();
+
 	        // Find the 'All' button and hover over it to reveal the slide out navigation
 	        WebElement allButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#nav-hamburger-menu")));
 	        Actions actions = new Actions(driver);
@@ -82,6 +89,9 @@ public class NavBarTests {
 	        wait.until(ExpectedConditions.titleContains("Shop By Interest"));
 	        String pageTitle = driver.getTitle();
 	        assertEquals("Shop By Interest", pageTitle);
+			Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+			String testName = currentTestMethod.getName();
+			logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
 	    }
 	    /*
 	     * it was not clickable using only .click() 
@@ -89,15 +99,17 @@ public class NavBarTests {
 	     */
 	    @Test
 	    public void testNestedNavigation()   {
+			System.out.println("\nNavbar yonlendirme testi basladi..\n");
 	    	driver.get("https://www.amazon.com");
-	    	System.out.println("Navbar yonlendirme testi basladi..");
-	    	System.out.println();
 	      WebElement navBar = driver.findElement(By.id("nav-main"));
 	      WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Gift Cards')]")));
 	      JavascriptExecutor executor = (JavascriptExecutor) driver;
 	      executor.executeScript("arguments[0].click();", element);
 	      wait.until(ExpectedConditions.titleContains("Gift Cards"));
 	      assertTrue(driver.getTitle().contains("Gift Cards"));
+			Method currentTestMethod = new Object(){}.getClass().getEnclosingMethod();
+			String testName = currentTestMethod.getName();
+			logger.log(Level.INFO, "Test adı: " + testName+" basariyla tamamlandi");
 	    }
 	   
 
